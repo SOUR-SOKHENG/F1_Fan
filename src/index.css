@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@font-face{
+    font-family: TitilliumWeb-BoldItalic;
+    src : url("../src/assets/Font/Titillium_Web/TitilliumWeb-BoldItalic")
+}
+
+@theme{
+    --font--titilliumWeb: TitilliumWeb-BoldItalic , "sans-serif";
+}

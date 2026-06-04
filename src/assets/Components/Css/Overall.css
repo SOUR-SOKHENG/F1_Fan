@@ -178,3 +178,9 @@ main {
     background-color: #f4f6f9;
     padding-top: 30px;
 }
+
+.Footer{
+    width: 100%;
+    height: 100px;
+    background-color:  rgba(142, 3, 3, 0.944) ;
+}

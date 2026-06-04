@@ -5,8 +5,8 @@ import Home1 from "../Media/F1_track.jpg"
 import './Css/Overall.css'
 import './Css/Home.css'
 import Kimi from '../Media/Kimi_antonelli.png'
-import Miami from '../Media/Miami.png'
-import Canada from '../Media/Canada.png'
+import monaco from '../Media/monaco.jpg'
+import spain from '../Media/spain.jpg'
 import Calender from '../Media/f1-calendar.jpg'
 import F1_Cru from '../Media/f1Crusel.jpg'
 import { useState, useEffect } from "react";
@@ -141,24 +141,24 @@ const Home = () => {
           </div>
         </div>
 
-        <div className='place-items-center gap-5 mt-[150px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2'>
+        <div className='place-items-center gap-0 mt-[150px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2'>
           <section className='Race-icon'>
             <h3 className='text-center text-2xl'>Previous Race</h3>
             <div className='box bg-black w-[250px] h-[250px] rounded-5'>
-              <img className='w-100 h-100 rounded-5 object-fit-cover' src={Miami} alt="" />
+              <img className='w-100 h-100 rounded-5 object-fit-cover' src={monaco} alt="" />
             </div>
-            <p>{previousRace?.raceName}</p>
-            <p>{previousRace?.Circuit?.Location?.country}</p>
-            <p>{previousRace?.date}</p>
+            <p className='text-center mt-2 text-2xl '>{previousRace?.raceName}</p>
+            <p className='text-center'>{previousRace?.Circuit?.Location?.country}</p>
+            <p className='text-center'>{previousRace?.date}</p>
           </section>
           <section className='Race-icon'>
             <h3 className='text-center text-2xl'>Next Race</h3>
             <div className='box w-[250px] h-[250px] rounded-5'>
-              <img src={Canada} className='w-100 h-100 object-fit-cover rounded-5' alt="" />
+              <img src={spain} className='w-100 h-100 object-fit-cover rounded-5' alt="" />
             </div>
-            <p>{nextRace?.raceName}</p>
-            <p>{nextRace?.Circuit?.Location?.country}</p>
-            <p>{nextRace?.date}</p>
+            <p className='text-center mt-2 text-2xl '>{nextRace?.raceName}</p>
+            <p className='text-center'>{nextRace?.Circuit?.Location?.country}</p>
+            <p className='text-center'>{nextRace?.date}</p>
           </section>
         </div>
       </section>

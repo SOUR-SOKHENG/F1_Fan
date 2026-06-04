@@ -1,9 +1,10 @@
 {
   "name": "f1",
   "private": true,
+  "homepage": "https://your-github-username.github.io/F1_Fan",
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://your-github-username.github.io/F1_Fan",
+  
   
   "scripts": {
     "dev": "vite",

@@ -1,5 +1,6 @@
 import React from 'react'
-import { BrowserRouter , Router , Route , Routes } from 'react-router-dom'
+import { BrowserRouter as Router , Route , Routes } from 'react-router-dom'
+import { BrowserRouter  } from 'react-router-dom'
 import Home from '../assets/Components/Home'
 import About from'../assets/Components/About'
 import Team from '../assets/Components/Team'
@@ -12,7 +13,7 @@ import Footer from '../assets/Components/Footer'
 const MenuRouth = () => {
   return (
     <BrowserRouter basename="/F1_Fan">
-    <Router>
+    {/* <Router> */}
         <Navbar/>
             <Routes>
                 <Route path='/' element={<Home/>}/>
@@ -23,7 +24,7 @@ const MenuRouth = () => {
                 <Route path='/Clips' element={<Clip/>}/>
             </Routes>
         <Footer/>
-    </Router>
+    {/* </Router> */}
     </BrowserRouter>
   )
 }

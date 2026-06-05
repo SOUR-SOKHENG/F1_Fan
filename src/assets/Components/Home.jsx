@@ -12,8 +12,6 @@ import F1_Cru from '../Media/f1Crusel.jpg'
 import { useState, useEffect } from "react";
 
 const Home = () => {
-  // BUG 1 FIX: useState hooks must be at the top level of the component,
-  // not inside useEffect
   const [standings, setStandings]       = useState([]);
   const [loading, setLoading]           = useState(true);
   const [error, setError]               = useState(null);
@@ -21,9 +19,6 @@ const Home = () => {
   const [nextRace, setNextRace]         = useState(null);
 
   useEffect(() => {
-    // BUG 2 FIX: added missing .catch and .finally to standings fetch
-    // BUG 3 FIX: all 3 fetches combined into Promise.all so loading/error
-    //            are handled correctly for all of them together
     const standingsFetch = fetch("https://api.jolpi.ca/ergast/f1/2026/driverstandings/")
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -88,11 +83,10 @@ const Home = () => {
       </table>
     </div>
   );
-
   return (
     <div className='Big-box'>
       <section className='container mb-4'>
-        <div id="carouselExample" className="carousel slide">
+        <div id="carouselExampleAutoplaying" className="carousel slide" data-bs-ride="carousel">
           <div className="carousel-inner">
             <div className="carousel-item active">
               <img src={F1_Cru} alt="Leader" className='d-block w-100 h-[55vh] position-relative object-fit-contain' />
@@ -105,11 +99,11 @@ const Home = () => {
               <img src={Calender} className="d-block w-100 h-[55vh] object-fit-contain" alt="..." />
             </div>
           </div>
-          <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+          <button className="carousel-control-prev" type="button" data-bs-target="##carouselExampleAutoplaying" data-bs-slide="prev">
             <span className="carousel-control-prev-icon" aria-hidden="true"></span>
             <span className="visually-hidden">Previous</span>
           </button>
-          <button className="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+          <button className="carousel-control-next" type="button" data-bs-target="##carouselExampleAutoplaying" data-bs-slide="next">
             <span className="carousel-control-next-icon" aria-hidden="true"></span>
             <span className="visually-hidden">Next</span>
           </button>
@@ -165,7 +159,9 @@ const Home = () => {
 
       <h1 className='font-bold ml-20 mt-5'>Features</h1>
       <section className='container-fluid w-100 h-auto mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1'>
-        <div className='box p-20 bg-yellow-200'></div>
+        <div className='box p-20 bg-yellow-200'>
+          <iframe className='w-100 h-100' src="https://www.youtube.com/watch?v=QrRh2vOJQbw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen Autoplayloop ></iframe>
+        </div>
         <div className='box p-20 bg-yellow-200'></div>
         <div className='box p-20 bg-yellow-200'></div>
         <div className='box p-20 bg-yellow-200'></div>

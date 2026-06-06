@@ -108,5 +108,7 @@
     .Current-Leader:hover{
         transform: scale(1);
     }
-    
-}
+    .Race-icon:hover{
+        transform: scale(1);
+    }
+}   

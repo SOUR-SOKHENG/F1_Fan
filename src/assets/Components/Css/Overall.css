@@ -159,8 +159,12 @@ nav{
     }
     .toggle:checked ~ .menu {
         display: flex;
-        
-}
+    }
+    .Footer{
+        overflow:hidden;
+        width: 100%;
+        font-size: 10px;
+    }
 }
 
 main { 
@@ -184,4 +188,11 @@ main {
     height: 100px;
     background-color:  rgba(142, 3, 3, 0.944) ;
     color: rgb(214, 210, 210);
+    .box{
+        padding: 3px 15px ;
+    }
+    .box-pic{
+        width: 25px;
+        height: 25px;
+    }
 }

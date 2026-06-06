@@ -30,7 +30,7 @@ const Footer = () => {
           <a href="https://www.formula1.com" className='text-decoration-none text-white'>www.Formular1.com</a>
         </div>
         <div className='box px-20 py-10 '>
-          <img className='w-50 h-100' src={ITE} alt="" />
+          <img className='box-pic w-50 h-100' src={ITE} alt="" />
         </div>
         </section>
     </div>

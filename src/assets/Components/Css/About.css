@@ -1,0 +1,18 @@
+.Title-section{
+    color: red;
+    border-left: 10px solid red;
+    margin-left: 15px;
+    padding-left: 30px;
+    font-weight: 600;
+    & p{
+        color: black;
+        font-weight: 100;
+    }
+}
+@media (max-width: 640px){
+    .Title-section{
+        width: full;
+        height: 150px;
+        margin-bottom: 10px;
+    }
+}

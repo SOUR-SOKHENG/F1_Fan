@@ -1,7 +1,6 @@
 import React from 'react'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Driver from "../Media/F1_driver_groupDriver.jpg"
-import Home1 from "../Media/F1_track.jpg"
 import './Css/Overall.css'
 import './Css/Home.css'
 import Kimi from '../Media/Kimi_antonelli.png'
@@ -88,22 +87,22 @@ const Home = () => {
       <section className='container mb-4'>
         <div id="carouselExampleAutoplaying" className="carousel slide" data-bs-ride="carousel">
           <div className="carousel-inner">
+            <div className="carousel-item">
+              <img src={Driver} style={{height : '55vh'}} className="d-block w-100  object-fit-contain" alt="Leader" />
+              {/* <h3 className='inset-s-50 transla'>2026 Driver</h3> */}
+            </div>
             <div className="carousel-item active">
-              <img src={F1_Cru} alt="Leader" className='d-block w-100 h-[55vh] position-relative object-fit-contain' />
+              <img src={F1_Cru} alt="Leader" style={{height : '55vh'}} className='d-block w-100   object-fit-contain' />
             </div>
             <div className="carousel-item">
-              <img src={Driver} className="d-block w-100 h-[55vh] object-fit-contain" alt="Leader" />
-              <h3 className='position-absolute bottom-5 right-150 text-white'>2026 Driver</h3>
-            </div>
-            <div className="carousel-item">
-              <img src={Calender} className="d-block w-100 h-[55vh] object-fit-contain" alt="..." />
+              <img src={Calender} style={{height : '55vh'}} className="d-block w-100  object-fit-contain" alt="..." />
             </div>
           </div>
-          <button className="carousel-control-prev" type="button" data-bs-target="##carouselExampleAutoplaying" data-bs-slide="prev">
+          <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
             <span className="carousel-control-prev-icon" aria-hidden="true"></span>
             <span className="visually-hidden">Previous</span>
           </button>
-          <button className="carousel-control-next" type="button" data-bs-target="##carouselExampleAutoplaying" data-bs-slide="next">
+          <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
             <span className="carousel-control-next-icon" aria-hidden="true"></span>
             <span className="visually-hidden">Next</span>
           </button>
@@ -139,7 +138,7 @@ const Home = () => {
           <section className='Race-icon'>
             <h3 className='text-center text-2xl'>Previous Race</h3>
             <div className='box bg-black w-[250px] h-[250px] rounded-5'>
-              <img className='w-100 h-100 rounded-5 object-fit-cover' src={monaco} alt="" />
+              <img className='w-100 h-100 rounded-5 object-fit-fill' src={monaco} alt="" />
             </div>
             <p className='text-center mt-2 text-2xl '>{previousRace?.raceName}</p>
             <p className='text-center'>{previousRace?.Circuit?.Location?.country}</p>
@@ -148,7 +147,7 @@ const Home = () => {
           <section className='Race-icon'>
             <h3 className='text-center text-2xl'>Next Race</h3>
             <div className='box w-[250px] h-[250px] rounded-5'>
-              <img src={spain} className='w-100 h-100 object-fit-cover rounded-5' alt="" />
+              <img src={spain} className='w-100 h-100 object-fit-fill rounded-5' alt="" />
             </div>
             <p className='text-center mt-2 text-2xl '>{nextRace?.raceName}</p>
             <p className='text-center'>{nextRace?.Circuit?.Location?.country}</p>
@@ -157,14 +156,24 @@ const Home = () => {
         </div>
       </section>
 
-      <h1 className='font-bold ml-20 mt-5'>Features</h1>
-      <section className='container-fluid w-100 h-auto mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1'>
-        <div className='box p-20 bg-yellow-200'>
-          <iframe className='w-100 h-100' src="https://www.youtube.com/watch?v=QrRh2vOJQbw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen Autoplayloop ></iframe>
+      <h1 className='font-bold ml-20 mt-5'>Highlights 2026 Season</h1>
+      {/*  grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1  */}
+      <section className='container-fluid w-100 h-auto mt-5 flex overflow-x-auto gap-4 pb-4 scrollbar-thin'>
+        <div className='box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]'>
+          <iframe className='w-full aspect-video' src="https://www.youtube.com/embed/eWOsJa24sQo" title="Race Highlights | Formula 1 Canadian Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
-        <div className='box p-20 bg-yellow-200'></div>
-        <div className='box p-20 bg-yellow-200'></div>
-        <div className='box p-20 bg-yellow-200'></div>
+        <div className='box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]'>
+          <iframe className='w-full aspect-video' src="https://www.youtube.com/embed/ksm1knZbzgc" title="Race Highlights | Formula 1 Miami Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div className='box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]'>
+          <iframe className='w-full aspect-video' src="https://www.youtube.com/embed/EW92sQPZuWk" title="Qualifying Highlights | Formula 1 Japanese Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div className='box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]'>
+          <iframe className='w-full aspect-video' src="https://www.youtube.com/embed/Fjpn0s-KtKI" title="Race Highlights | Formula 1 Chinese Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div className='box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]'>
+          <iframe className='w-full aspect-video' src="https://www.youtube.com/embed/ovJKA-FMJUg" title="Race Highlights | Formula 1 Australian Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
       </section>
     </div>
   );

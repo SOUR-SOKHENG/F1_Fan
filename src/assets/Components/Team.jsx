@@ -2,7 +2,10 @@ import React from 'react'
 
 const Team = () => {
   return (
-    <div>Team</div>
+    <div className='Big-box'>
+      
+
+    </div>
   )
 }
 

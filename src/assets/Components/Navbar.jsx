@@ -29,7 +29,7 @@ const Navbar = () => {
               <ul  id='primary-menu' className='menu'>
                 <li> <NavLink  to={'/'}></NavLink></li>
                 <li><NavLink  to={'/Home'} className=' navlink text-decoration-none text-2xl  font-TitilliumWeb-BoldItalic ' onClick={closeMenu}>Home</NavLink></li>
-                <li><NavLink className='  navlink text-decoration-none text-2xl ' to={'/About'} onClick={closeMenu}  >What is F1?</NavLink></li>
+                <li><NavLink className='  navlink text-decoration-none text-2xl ' to={'/About'} onClick={closeMenu}  >Guides</NavLink></li>
                 <li><NavLink className='  navlink text-decoration-none text-2xl  ' to={'/Team'} onClick={closeMenu}>Team</NavLink></li>
                 <li><NavLink className=' navlink text-decoration-none text-2xl ' to={'/News'} onClick={closeMenu}>News</NavLink></li>
                 <li><NavLink className=' navlink text-decoration-none text-2xl ' to={'/Clips'} onClick={closeMenu}>Clip</NavLink></li>

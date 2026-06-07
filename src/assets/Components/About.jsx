@@ -56,6 +56,46 @@ const About = () => {
           <p className='text-gray-600 mt-3 fw-bolder'>Tired Compounds Explained</p>
         </div>
       </section>  
+      <article className=' Title-section mt-5'>
+        <h2>Champions</h2>
+        <p>One Season , Two Championships</p>
+      </article>
+      <section className='container-fluid w-100 h-auto gap-3 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2'>
+        <div className='box bg-gray-300 p-6 rounded-4'>
+          <h3 className=' text-danger'>DRIVERS' CHAMPIONSHIP</h3>
+          <p>Awarded to the individual driver who scores the highest total points throughout the grand prix calender year.Points are earned strictly by finising in the Top 10 on race day, with 25 points aoocated to teh race winner.</p>
+        </div>
+        <div className='box bg-gray-300 p-6 rounded-4'>
+          <h3 className=' text-danger'>CONSTRUCTORS' CHAMPIONSHIP</h3>
+          <p>Awarded to the manufacturing team (e.g., Ferrari, Red Bull Racing, McLaren) that scores the highest combined points from <span className=' font-bold'>both</span> of their acrtive cars. This champioship directly decides multi-million dollar prize distributions!</p>
+        </div>
+      </section>
+      <article className='Title-section mt-5'>
+        <h3>ESSENTIAL TRACK SLANG</h3>
+        <p>Some slangs which you will hear from the team radio communications between the driver and their race engineer.</p>
+      </article>
+      <section className=' container-fluid w-100 h-auto grid gap-3 grid-cols-1 sm:grid-cols-1 lg:grid-cols-4'>
+        <div className='box  h-[250px] bg-gray-300 p-6 rounded-4'>
+          <h4 className=' text-danger'>De-Rate or Clipping</h4>
+          <p>Because the new regulation requires cars's power now to have 50% comes from the electric battery, the batterys will sometimes run out which lead the cars to lose power and speed , making them an easy tarket for anyone behind with full battery.   </p>
+        </div>
+        <div className='box bg-gray-300  h-[250px] p-6 rounded-4'>
+          <h4 className=' text-danger'>Box Box Box...</h4>
+          <p>Race Enginner asks the driver to bring the car back to pit stops for tires changing or any adjustment.</p>
+        </div>
+        <div className='box bg-gray-300  h-[250px] p-6 rounded-4' >
+          <h4 className=' text-danger'>Use Overtake</h4>
+          <p>Means driver has successfully crossed a detection point within 1.0 second of the car in front, which unlocks a special regulatory electionic override that inject an extra 0.5 megajoules of battery power onto their enginer mapping for the upcoming lap.</p>
+        </div>
+        <div className='box bg-gray-300  h-[250px] p-6 rounded-4'>
+          <h4 className=' text-danger'>Charge Level Critical</h4>
+          <p>The race engineers will order them to "harvest" or "recharge", meaning the drivers have to let of the gas pedal early before corners or apply break aggresively to funnel braking heat back into the hybrid system which will recharge the battery.</p>
+        </div>
+        <div className='box bg-gray-300  h-[280px] p-6 rounded-4'>
+          <h4 className=' text-danger'>Comfirm Straight Mode / Cornor Mod</h4>
+          <p>Refers to the <span className=' fw-bolder'>Active Aro</span> systems. Drivers manually open and flatten both their front and rear wings to drop grag on the straights(Straight Mode). The race enginners will tell them to switch back to<i>Cornor Mode</i> to make sure the wing flaps snap shut in order to increase down force before a high-speed turn. </p>
+        </div>
+      </section>
     </div>
   )
 }

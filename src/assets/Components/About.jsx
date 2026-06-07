@@ -6,7 +6,7 @@ const About = () => {
     <div className='Big-box'>
       <article className='container-fluid text-center article1'>     
          <span><h1>WHAT IS <span className=' text-red-500'>FORMULAR 1</span>?</h1></span>
-          <p className=' w-1/2 mx-auto text-center'>Welcome to the pinacle of motorsport. 11 teams, 22 elite drivers, and cutting-edge open-wheel engineering reaching speeds over 350 km/h on straingt line and over 200km/h in corner in a global battle for ultimate glory.</p>
+          <p className=' w-1/2 sm:w-full mx-auto text-center'>Welcome to the pinacle of motorsport. 11 teams, 22 elite drivers, and cutting-edge open-wheel engineering reaching speeds over 350 km/h on straingt line and over 200km/h in corner in a global battle for ultimate glory.</p>
       </article>
       <article className='Title-section mt-5'>
           <h2>THE GRAND PRIX FORMAT</h2>

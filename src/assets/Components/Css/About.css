@@ -1,9 +1,17 @@
+.Big-box{
+    height: 187vh;
+}
+
 .Title-section{
     color: red;
     border-left: 10px solid red;
+    background-color: rgb(214, 212, 212);
     margin-left: 15px;
     padding-left: 30px;
     font-weight: 600;
+    width: 30%;
+    height: 90px;
+    margin-bottom: 20px;
     & p{
         color: black;
         font-weight: 100;
@@ -12,9 +20,13 @@
 .box{
     border-left: 6px solid rgb(156, 2, 2);
 }
-@media (max-width: 640px){
+@media (min-width: 375px) and (max-width: 844px){
+    .article1{
+       height: 330px;
+    }
     .Title-section{
-        width: full;
+        padding: 10px 20px;
+        width: 93%;
         height: 140px;
         margin-bottom: 10px;
         & p{
@@ -24,4 +36,11 @@
     .Title-section:nth:type(2){
         height: 100px;
     }
+    .qualifying{
+        width: 99%;
+    }
+    .slang{
+        height: 160px;
+    }
+    
 }

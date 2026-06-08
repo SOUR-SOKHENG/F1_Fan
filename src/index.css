@@ -1,25 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap");
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap');
-
 /* Apply clean, readable text to the whole site */
-body {
+/* body {
   margin: 0;
   font-family: 'Inter', sans-serif;
   background-color: #15151e; /* Classic F1 Dark Carbon color */
-  color: #ffffff;
-}
+/* color: #ffffff; */
+/* }  */
 
 /* Apply the aggressive racing font to headers */
-h1, h2, h3, h4 , .f1-title {
-  font-family: 'Orbitron', sans-serif;
+h1,
+h2,
+h3,
+h4,
+.f1-title {
+  font-family: "Orbitron", sans-serif;
   text-transform: uppercase; /* F1 titles are always in all caps */
   letter-spacing: 2px;
   font-style: italic; /* Slanted makes it look fast! */
 }
 
 /* Apply the timing-clock font to stats and numbers */
-.lap-time, .points, .stats-data {
-  font-family: 'Share Tech Mono', monospace;
+.lap-time,
+.points,
+.stats-data {
+  font-family: "Share Tech Mono", monospace;
   color: #ff1801; /* F1 Signature Racing Red */
 }

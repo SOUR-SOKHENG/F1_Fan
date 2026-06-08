@@ -13,7 +13,6 @@ import Footer from '../assets/Components/Footer'
 const MenuRouth = () => {
   return (
     <BrowserRouter basename="/F1_Fan">
-    {/* <Router> */}
         <Navbar/>
             <Routes>
                 <Route path='/' element={<Home/>}/>
@@ -24,7 +23,6 @@ const MenuRouth = () => {
                 <Route path='/Clips' element={<Clip/>}/>
             </Routes>
         <Footer/>
-    {/* </Router> */}
     </BrowserRouter>
   )
 }

@@ -4,8 +4,8 @@ import ITE from '../Media/ITE.png'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const Footer = () => {
   return (
-    <div>
-        <section className='Footer  w-100 h-auto mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1 '>
+    <div className=" flex flex-col justify-between ">
+        <section className='Footer w-100 h-auto pt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1 '>
         <div className='box px-20 py-10 '>
           <p>This F1-Fan page is created and developed by SOKHENG SOUR, ITE 11th</p>
           <p>© 2026-2027</p>

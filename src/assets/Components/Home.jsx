@@ -1,6 +1,7 @@
 import React from 'react'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Driver from "../Media/F1_driver_groupDriver.jpg"
+import Home1 from "../Media/F1_track.jpg"
 import './Css/Overall.css'
 import './Css/Home.css'
 import Kimi from '../Media/Kimi_antonelli.png'
@@ -81,19 +82,17 @@ const Home = () => {
         </tbody>
       </table>
     </div>
-  );
+  )
   return (
-    <div className='Big-box'>
+    <div className='Big-box h-100'>
       <section className='container mb-4'>
         <div id="carouselExampleAutoplaying" className="carousel slide" data-bs-ride="carousel">
           <div className="carousel-inner">
-            <div className="carousel-item">
-              <img src={Driver} style={{height : '55vh'}} className="d-block w-100  object-fit-contain" alt="Leader" />
-              {/* <h3 className='inset-s-50 transla'>2026 Driver</h3> */}
-            </div>
             <div className="carousel-item active">
-              <img src={F1_Cru} alt="Leader" style={{height : '55vh'}} className='d-block w-100   object-fit-contain' />
+              <img src={F1_Cru} alt="Leader" style={{height : '55vh'}} className='d-block w-100  position-relative object-fit-contain' />
             </div>
+            <div className="carousel-item">
+              <img src={Driver} style={{height : '55vh'}} className="d-block w-100  object-fit-contain" alt="Leader" />            </div>
             <div className="carousel-item">
               <img src={Calender} style={{height : '55vh'}} className="d-block w-100  object-fit-contain" alt="..." />
             </div>
@@ -108,7 +107,6 @@ const Home = () => {
           </button>
         </div>
       </section>
-
       <section className='Main-content content-center items-center'>
         <article className='w-100 place-items-center'>
           <h2 className=''>Welcome to F1</h2>
@@ -132,8 +130,8 @@ const Home = () => {
               <p className='text-2xl font-bold'>Team: Mercedes</p>
             </article>
           </div>
-        </div>
-
+        </div> 
+        {/* race icon */}
         <div className='place-items-center gap-0 mt-[150px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2'>
           <section className='Race-icon'>
             <h3 className='text-center text-2xl'>Previous Race</h3>
@@ -154,29 +152,33 @@ const Home = () => {
             <p className='text-center'>{nextRace?.date}</p>
           </section>
         </div>
-      </section>
-
-      <h1 className='font-bold ml-20 mt-5'>Highlights 2026 Season</h1>
-      {/*  grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1  */}
-      <section className='container-fluid w-100 h-auto mt-5 flex overflow-x-auto gap-4 pb-4 scrollbar-thin'>
-        <div className='box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]'>
-          <iframe className='w-full aspect-video' src="https://www.youtube.com/embed/eWOsJa24sQo" title="Race Highlights | Formula 1 Canadian Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-        <div className='box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]'>
-          <iframe className='w-full aspect-video' src="https://www.youtube.com/embed/ksm1knZbzgc" title="Race Highlights | Formula 1 Miami Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-        <div className='box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]'>
-          <iframe className='w-full aspect-video' src="https://www.youtube.com/embed/EW92sQPZuWk" title="Qualifying Highlights | Formula 1 Japanese Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-        <div className='box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]'>
-          <iframe className='w-full aspect-video' src="https://www.youtube.com/embed/Fjpn0s-KtKI" title="Race Highlights | Formula 1 Chinese Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-        <div className='box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]'>
-          <iframe className='w-full aspect-video' src="https://www.youtube.com/embed/ovJKA-FMJUg" title="Race Highlights | Formula 1 Australian Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <div className="w-full h-50 mt-5 bg-[#15151e] pt-6">
+          <div className=" container-fluid  px-4 mx-auto " >
+            <div className="w-full mb-6 block">
+               <h2 className="text-2xl sm:text-3xl font-black italic uppercase tracking-wider text-white">Highlights 2026 Season</h2>
+            </div>
+              <section className='container-fluid w-100 h-[30vh]  flex overflow-x-auto gap-4 pb-4 scrollbar-thin flex-nowrap'>
+                <div className='box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]'>
+                  <iframe className='w-full aspect-video' src="https://www.youtube.com/embed/eWOsJa24sQo" title="Race Highlights | Formula 1 Canadian Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <div className='box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]'>
+                  <iframe className='w-full aspect-video' src="https://www.youtube.com/embed/ksm1knZbzgc" title="Race Highlights | Formula 1 Miami Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <div className='box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]'>
+                  <iframe className='w-full aspect-video' src="https://www.youtube.com/embed/EW92sQPZuWk" title="Qualifying Highlights | Formula 1 Japanese Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <div className='box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]'>
+                  <iframe className='w-full aspect-video' src="https://www.youtube.com/embed/Fjpn0s-KtKI" title="Race Highlights | Formula 1 Chinese Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <div className='box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]'>
+                  <iframe className='w-full aspect-video' src="https://www.youtube.com/embed/ovJKA-FMJUg" title="Race Highlights | Formula 1 Australian Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+              </section>
+          </div>
         </div>
       </section>
     </div>
-  );
+  )
 }
 
 export default Home

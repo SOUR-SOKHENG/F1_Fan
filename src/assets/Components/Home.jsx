@@ -116,14 +116,14 @@ const Home = () => {
         <div className='result flex flex-col lg:flex-row justify-center gap-10 mt-5 px-4'>
           <div className='Current-results'>
             <h3 className='text-white'>Current Result</h3>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <div className='table-result grid grid-cols-1 md:grid-cols-2 gap-4'>
               {renderTable(firstHalf)}
               {renderTable(secondHalf)}
             </div>
           </div>
           <div className='Current-Leader'>
             <h3>Current WDC Leader</h3>
-            <img src={Kimi} alt="Kimi" className='' />
+            <img src={Kimi} alt="Kimi" />
             <article className='mt-3 p-0'>
               <p className='text-2xl font-bold'>Driver: Kimi Antonelli</p>
               <p className='text-2xl font-bold'>Nationality : 🇮🇹</p>

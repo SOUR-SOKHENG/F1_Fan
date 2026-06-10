@@ -79,7 +79,7 @@
     transform: scale(1.2);
 }
 
-@media (max-width:640px){
+@media (min-width: 390px) and (max-width: 844px){
     .Big-box{
         width: 100%;
         height: auto;
@@ -112,5 +112,6 @@
     }
     .T-result{
         height: 1490px;
+        width: 90%;
     }
 }   

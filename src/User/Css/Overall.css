@@ -198,3 +198,39 @@ main {
         border-radius: 25px;
     }
 }
+.admin-floating-back {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 2500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  color: #ffffff;
+  background: #e10600;
+  border: 2px solid #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.admin-floating-back:hover {
+  color: #ffffff;
+  background: #202229;
+  transform: translateY(-3px);
+}
+
+@media (max-width: 550px) {
+  .admin-floating-back {
+    right: 14px;
+    bottom: 14px;
+    padding: 9px 13px;
+    font-size: 12px;
+  }
+}

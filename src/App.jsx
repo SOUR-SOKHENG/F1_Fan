@@ -1,12 +1,11 @@
-import React from "react";
-import MenuRouth from "./Home/MenuRouth";
+import AppRouter from "./Router/AppRouter";
 
 
 
 const App = () => {
   return (
     <div>
-      <MenuRouth/>
+      <AppRouter />
     </div>
   );
 };

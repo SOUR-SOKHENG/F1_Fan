@@ -1,6 +1,5 @@
-import React from 'react'
-import './Css/Overall.css'
-import ITE from '../Media/ITE.png'
+import "../Css/Overall.css";
+import ITE from "../../assets/Media/ITE.png";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const Footer = () => {
   return (

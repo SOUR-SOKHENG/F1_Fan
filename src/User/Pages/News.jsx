@@ -1,26 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  query,
-  serverTimestamp,
-  setDoc,
-  where,
-} from "firebase/firestore";
+import { collection, deleteDoc, doc, onSnapshot, query, serverTimestamp, setDoc, where } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 import { useAuth } from "../../context/useAuth";
-import SavePostButton from "../Components/News/SavePostButton";
+import SavePostBtn from "../Components/News/SavePostButton";
 import "../Css/News.css";
 
-const News = () => {
+function News() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
-  const [loadingPosts, setLoadingPosts] = useState(true);
-  const [likesByPost, setLikesByPost] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [likes, setLikes] = useState({});
 
   const handleShare = async (post) => {
     const articleLink =
@@ -70,11 +61,11 @@ const News = () => {
         });
 
         setPosts(postList);
-        setLoadingPosts(false);
+        setLoading(false);
       },
       (error) => {
         console.error("Could not load news:", error);
-        setLoadingPosts(false);
+        setLoading(false);
       },
     );
 
@@ -82,7 +73,7 @@ const News = () => {
   }, []);
   useEffect(() => {
     if (posts.length === 0) {
-      setLikesByPost({});
+      setLikes({});
       return;
     }
 
@@ -94,7 +85,7 @@ const News = () => {
           ? snapshot.docs.some((likeDocument) => likeDocument.id === user.uid)
           : false;
 
-        setLikesByPost((currentLikes) => ({
+        setLikes((currentLikes) => ({
           ...currentLikes,
           [post.id]: {
             count: snapshot.size,
@@ -115,7 +106,7 @@ const News = () => {
     }
 
     const likeRef = doc(db, "posts", postId, "likes", user.uid);
-    const alreadyLiked = likesByPost[postId]?.liked;
+    const alreadyLiked = likes[postId]?.liked;
 
     try {
       if (alreadyLiked) {
@@ -132,26 +123,24 @@ const News = () => {
     }
   };
   return (
-    <main className="news-page">
-      <h1>F1 News</h1>
+    <main className="mx-auto mb-10 mt-6 min-h-[80vh] max-w-[1150px] px-3.5 font-sans sm:my-10 sm:px-5">
+      <h1 className="mb-[30px] border-l-[7px] border-[#e10600] pl-[15px] text-[32px] uppercase sm:text-[42px]">
+        F1 News
+      </h1>
 
-      <section className="news-list">
-        <h2>Latest News</h2>
+      <section className="mt-11">
+        <h2 className="mb-5 text-3xl">Latest News</h2>
 
-        {loadingPosts && <p>Loading latest news...</p>}
+        {loading && <p>Loading latest news...</p>}
 
-        {!loadingPosts && posts.length === 0 && (
+        {!loading && posts.length === 0 && (
           <p>No news has been published yet.</p>
         )}
 
         <div className="news-grid">
           {posts.map((post) => (
             <article className="news-card" id={`post-${post.id}`} key={post.id}>
-              <img
-                className="news-thumbnail"
-                src={post.thumbnailUrl}
-                alt={post.title}
-              />
+              <img className="news-thumbnail" src={post.thumbnailUrl} alt={post.title} />
 
               <div className="news-card-content">
                 <span className="news-type">
@@ -169,33 +158,18 @@ const News = () => {
                 )}
 
                 {post.type === "external" && (
-                  <a
-                    href={post.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href={post.sourceUrl} target="_blank" rel="noopener noreferrer" >
                     Read original news
                   </a>
                 )}
 
                 <div className="news-user-actions">
-                  <SavePostButton postId={post.id} />
-                  <button
-                    className="share-post-button"
-                    type="button"
-                    onClick={() => handleShare(post)}
-                  >
+                  <SavePostBtn postId={post.id} />
+                  <button className="share-post-btn" type="button" onClick={() => handleShare(post)} >
                     Share
                   </button>
-                  <button
-                    className={
-                      likesByPost[post.id]?.liked
-                        ? "like-post-button liked"
-                        : "like-post-button"
-                    }
-                    type="button"
-                    onClick={() => handleLike(post.id)}>
-                    Like · {likesByPost[post.id]?.count || 0}
+                  <button className={ likes[post.id]?.liked ? "like-post-btn liked" : "like-post-btn" } type="button" onClick={() => handleLike(post.id)}>
+                    Like · {likes[post.id]?.count || 0}
                   </button>
                 </div>
               </div>
@@ -205,6 +179,6 @@ const News = () => {
       </section>
     </main>
   );
-};
+}
 
 export default News;

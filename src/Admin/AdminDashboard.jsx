@@ -6,10 +6,10 @@ import { useAuth } from "../context/useAuth";
 
 const ACTIVE_TIME = 5 * 60 * 1000;
 
-const AdminDashboard = () => {
+function AdminDashboard() {
   const { user: adminUser } = useAuth();
   const [users, setUsers] = useState([]);
-  const [currentTime, setCurrentTime] = useState(Date.now());
+  const [currentTime, setCurrentTime] = useState(() => Date.now());
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -93,21 +93,15 @@ const AdminDashboard = () => {
   });
 
   return (
-    <main className="admin-dashboard">
+    <main className="mx-auto my-0 grid max-w-[1200px] gap-[25px] p-0">
       <section className="dashboard-hero">
         <div className="dashboard-hero-content">
           <p>F1 FAN MEDIA CONTROL CENTRE</p>
           <h2>Race Control Dashboard</h2>
           <span>{today}</span>
         </div>
-
-        <div className="dashboard-live-status">
-          <span></span>
-          Firebase live
-        </div>
       </section>
-
-      <section className="dashboard-stat-grid">
+      <section className="grid grid-cols-1 gap-[17px] min-[701px]:grid-cols-2 min-[1151px]:grid-cols-4">
         <article className="dashboard-stat-card total">
           <div className="dashboard-stat-icon">U</div>
           <div>
@@ -145,8 +139,8 @@ const AdminDashboard = () => {
         </article>
       </section>
 
-      <section className="dashboard-main-grid">
-        <article className="dashboard-profile-progress">
+      <section className="grid grid-cols-1 gap-[22px] min-[1151px]:grid-cols-[0.8fr_1.2fr]">
+        <article className="dashboard-profile-progress rounded-[15px] border border-gray-200 bg-white p-[25px] shadow-md">
           <div className="dashboard-section-heading">
             <div>
               <p>COMMUNITY PROGRESS</p>
@@ -167,8 +161,7 @@ const AdminDashboard = () => {
 
           <NavLink to="/Admin/Users">Manage users</NavLink>
         </article>
-
-        <article className="dashboard-quick-actions">
+        <article className="dashboard-quick-actions rounded-[15px] border border-gray-200 bg-white p-[25px] shadow-md">
           <div className="dashboard-section-heading">
             <div>
               <p>QUICK ACCESS</p>
@@ -210,47 +203,32 @@ const AdminDashboard = () => {
         </article>
       </section>
 
-      <section className="dashboard-recent-users">
+      <section className="dashboard-recent-users rounded-[15px] border border-gray-200 bg-white p-[25px] shadow-md">
         <div className="dashboard-section-heading">
           <div>
             <p>NEW PADDOCK MEMBERS</p>
             <h3>Recently registered users</h3>
           </div>
-
           <NavLink to="/Admin/Users">View all users</NavLink>
         </div>
-
         {loading && <p>Loading recent users...</p>}
-
         {!loading && recentUsers.length === 0 && (
-          <p>No users have registered yet.</p>
-        )}
-
+          <p>No users have registered yet.</p>)}
         <div className="dashboard-user-list">
           {recentUsers.map((profile) => (
             <div className="dashboard-user-row" key={profile.id}>
               <div className="dashboard-user-number">
                 {profile.racingNumber || "00"}
               </div>
-
               <div className="dashboard-user-name">
                 <strong>
                   {profile.username ? `#${profile.username}` : "No username"}
                 </strong>
-
                 <span>{profile.displayName || "Profile not completed"}</span>
               </div>
-
-              <span
-                className={
-                  profile.banned
-                    ? "dashboard-user-status banned"
-                    : "dashboard-user-status"
-                }
-              >
+              <span className={ profile.banned ? "dashboard-user-status banned" : "dashboard-user-status" } >
                 {profile.banned ? "Banned" : "Active"}
               </span>
-
               <time>{formatJoinDate(profile.createdAt)}</time>
             </div>
           ))}
@@ -258,6 +236,6 @@ const AdminDashboard = () => {
       </section>
     </main>
   );
-};
+}
 
 export default AdminDashboard;

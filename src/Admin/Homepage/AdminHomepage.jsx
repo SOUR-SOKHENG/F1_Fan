@@ -1,14 +1,8 @@
 import { useEffect, useState } from "react";
-import {
-  doc,
-  getDoc,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { db } from "../../lib/firebase";
-import "./AdminHomepage.css";
 
-const AdminHomepage = () => {
+function AdminHomepage() {
   const [homepage, setHomepage] = useState({
     announcement: "",
     welcomeTitle: "",
@@ -79,111 +73,69 @@ const AdminHomepage = () => {
   };
 
   if (loading) {
-    return <p>Loading homepage settings...</p>;
+    return <p className="py-10 text-center text-gray-500">Loading homepage settings...</p>;
   }
 
   return (
-    <section className="admin-homepage">
-      <div className="admin-homepage-heading">
+    <section className="w-full">
+      <div className="mb-[25px] flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-center">
         <div>
-          <p>WEBSITE CONTENT</p>
-          <h2>Manage Homepage</h2>
+          <p className="mb-[5px] text-xs font-extrabold tracking-[1.5px] text-[#e10600]">
+            WEBSITE CONTENT
+          </p>
+          <h2 className="m-0 text-[30px] text-[#17181c]">Manage Homepage</h2>
         </div>
 
-        <a href="/F1_Fan/Home" target="_blank" rel="noreferrer">
+        <a className="rounded-lg bg-[#202229] px-4 py-2.5 text-sm font-bold text-white no-underline hover:bg-[#e10600]" href="/F1_Fan/Home" target="_blank" rel="noreferrer">
           Preview homepage
         </a>
       </div>
 
-      <form className="homepage-form" onSubmit={handleSave}>
-        <div className="homepage-form-section">
-          <h3>Announcement</h3>
-          <p>
+      <form className="grid gap-[22px]" onSubmit={handleSave}>
+        <div className="grid gap-[11px] rounded-[14px] border border-gray-200 bg-white p-[18px] shadow-md sm:p-6">
+          <h3 className="m-0 text-xl text-[#1b1d22]">Announcement</h3>
+          <p className="mb-[5px] text-sm text-gray-500">
             Leave this empty when you do not want an announcement on the
             homepage.
           </p>
 
-          <label htmlFor="announcement">Announcement message</label>
-          <input
-            id="announcement"
-            name="announcement"
-            type="text"
-            value={homepage.announcement}
-            onChange={handleChange}
-            placeholder="Example: The next race begins this Sunday"
-          />
+          <label className="mt-[7px] text-sm font-bold text-gray-700" htmlFor="announcement">Announcement message</label>
+          <input className="w-full rounded-lg border border-gray-300 bg-gray-50 px-3.5 py-3 outline-none focus:border-[#e10600] focus:bg-white focus:ring-4 focus:ring-red-100" id="announcement" name="announcement" type="text" value={homepage.announcement} onChange={handleChange} placeholder="Example: The next race begins this Sunday" />
         </div>
-        <div className="homepage-form-section">
-          <h3>Carousel Images</h3>
-          <p>Paste three direct image links for the homepage carousel.</p>
+        <div className="grid gap-[11px] rounded-[14px] border border-gray-200 bg-white p-[18px] shadow-md sm:p-6">
+          <h3 className="m-0 text-xl text-[#1b1d22]">Carousel Images</h3>
+          <p className="mb-[5px] text-sm text-gray-500">Paste three direct image links for the homepage carousel.</p>
 
-          <label htmlFor="firstImageUrl">First image URL</label>
-          <input
-            id="firstImageUrl"
-            name="firstImageUrl"
-            type="url"
-            value={homepage.firstImageUrl}
-            onChange={handleChange}
-            placeholder="https://example.com/image-one.jpg"
-          />
+          <label className="mt-[7px] text-sm font-bold text-gray-700" htmlFor="firstImageUrl">First image URL</label>
+          <input className="w-full rounded-lg border border-gray-300 bg-gray-50 px-3.5 py-3 outline-none focus:border-[#e10600] focus:bg-white focus:ring-4 focus:ring-red-100" id="firstImageUrl" name="firstImageUrl" type="url" value={homepage.firstImageUrl} onChange={handleChange} placeholder="https://example.com/image-one.jpg" />
 
           {homepage.firstImageUrl && (
-            <img
-              className="homepage-image-preview"
-              src={homepage.firstImageUrl}
-              alt="First carousel preview"
-            />
+            <img className="mt-1 h-[170px] w-full max-w-[520px] rounded-[10px] bg-gray-200 object-cover sm:h-[220px]" src={homepage.firstImageUrl} alt="First carousel preview" />
           )}
 
-          <label htmlFor="secondImageUrl">Second image URL</label>
-          <input
-            id="secondImageUrl"
-            name="secondImageUrl"
-            type="url"
-            value={homepage.secondImageUrl}
-            onChange={handleChange}
-            placeholder="https://example.com/image-two.jpg"
-          />
+          <label className="mt-[7px] text-sm font-bold text-gray-700" htmlFor="secondImageUrl">Second image URL</label>
+          <input className="w-full rounded-lg border border-gray-300 bg-gray-50 px-3.5 py-3 outline-none focus:border-[#e10600] focus:bg-white focus:ring-4 focus:ring-red-100" id="secondImageUrl" name="secondImageUrl" type="url" value={homepage.secondImageUrl} onChange={handleChange} placeholder="https://example.com/image-two.jpg" />
 
           {homepage.secondImageUrl && (
-            <img
-              className="homepage-image-preview"
-              src={homepage.secondImageUrl}
-              alt="Second carousel preview"
-            />
+            <img className="mt-1 h-[170px] w-full max-w-[520px] rounded-[10px] bg-gray-200 object-cover sm:h-[220px]" src={homepage.secondImageUrl} alt="Second carousel preview" />
           )}
 
-          <label htmlFor="thirdImageUrl">Third image URL</label>
-          <input
-            id="thirdImageUrl"
-            name="thirdImageUrl"
-            type="url"
-            value={homepage.thirdImageUrl}
-            onChange={handleChange}
-            placeholder="https://example.com/image-three.jpg"
-          />
+          <label className="mt-[7px] text-sm font-bold text-gray-700" htmlFor="thirdImageUrl">Third image URL</label>
+          <input className="w-full rounded-lg border border-gray-300 bg-gray-50 px-3.5 py-3 outline-none focus:border-[#e10600] focus:bg-white focus:ring-4 focus:ring-red-100" id="thirdImageUrl" name="thirdImageUrl" type="url" value={homepage.thirdImageUrl} onChange={handleChange} placeholder="https://example.com/image-three.jpg" />
 
           {homepage.thirdImageUrl && (
-            <img
-              className="homepage-image-preview"
-              src={homepage.thirdImageUrl}
-              alt="Third carousel preview"
-            />
+            <img className="mt-1 h-[170px] w-full max-w-[520px] rounded-[10px] bg-gray-200 object-cover sm:h-[220px]" src={homepage.thirdImageUrl} alt="Third carousel preview" />
           )}
         </div>
 
-        {message && <p className="homepage-save-message">{message}</p>}
+        {message && <p className="m-0 rounded-md border-l-4 border-[#e10600] bg-white px-4 py-[13px] text-gray-700">{message}</p>}
 
-        <button
-          className="homepage-save-button"
-          type="submit"
-          disabled={saving}
-        >
+        <button className="w-fit rounded-lg border-0 bg-[#e10600] px-6 py-3 text-[15px] font-extrabold text-white hover:bg-[#b80500] disabled:cursor-not-allowed disabled:opacity-65" type="submit" disabled={saving} >
           {saving ? "Saving..." : "Save homepage"}
         </button>
       </form>
     </section>
   );
-};
+}
 
 export default AdminHomepage;

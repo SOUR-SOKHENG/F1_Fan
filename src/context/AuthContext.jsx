@@ -1,12 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import {
-  doc,
-  getDoc,
-  onSnapshot,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
+import { doc, getDoc, onSnapshot, serverTimestamp, setDoc } from "firebase/firestore";
 import { auth, db } from "../lib/firebase";
 
 const AuthContext = createContext(null);
@@ -28,9 +22,9 @@ export function AuthProvider({ children }) {
       }
       let adminAccount = false;
       try {
-        const adminDocument = await getDoc(doc(db, "admins", nextUser.uid));
+        const adminDoc = await getDoc(doc(db, "admins", nextUser.uid));
 
-        adminAccount = adminDocument.exists();
+        adminAccount = adminDoc.exists();
         setIsAdmin(adminAccount);
       } catch (error) {
         console.error("Could not check admin account:", error);
@@ -39,12 +33,12 @@ export function AuthProvider({ children }) {
 
       try {
         const userRef = doc(db, "users", nextUser.uid);
-        const userDocument = await getDoc(userRef);
+        const userDoc = await getDoc(userRef);
 
         if (
           !adminAccount &&
-          userDocument.exists() &&
-          userDocument.data().banned === true
+          userDoc.exists() &&
+          userDoc.data().banned === true
         ) {
           await signOut(auth);
           setLoading(false);
@@ -57,7 +51,7 @@ export function AuthProvider({ children }) {
           lastActiveAt: serverTimestamp(),
         };
 
-        if (!userDocument.exists()) {
+        if (!userDoc.exists()) {
           profileData.displayName = nextUser.displayName || "F1 Fan";
           profileData.banned = false;
           profileData.createdAt = serverTimestamp();

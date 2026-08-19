@@ -1,40 +1,3 @@
-.clips-page {
-  width: 100%;
-  max-width: none;
-  min-height: 100vh;
-  margin: 0;
-  padding: 60px 6%;
-  box-sizing: border-box;
-  background: #f4f5f7;
-  color: #20232a;
-}
-
-.clips-heading {
-  max-width: 760px;
-  margin-bottom: 38px;
-}
-
-.clips-label {
-  margin: 0 0 8px;
-  color: #e10600;
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 2px;
-}
-
-.clips-heading h1 {
-  margin: 0;
-  font-size: clamp(36px, 5vw, 62px);
-  font-style: italic;
-  text-transform: uppercase;
-}
-
-.clips-heading > p:last-child {
-  margin-top: 14px;
-  color: #60636b;
-  font-size: 17px;
-  line-height: 1.6;
-}
 .clips-filters {
   display: grid;
   grid-template-columns: minmax(260px, 1fr) 180px 180px auto;
@@ -93,22 +56,6 @@ box-sizing: border-box;
   background: #e10600;
 }
 
-.clips-message button {
-  margin-top: 10px;
-  padding: 9px 15px;
-  color: #ffffff;
-  background: #e10600;
-  border: 0;
-  border-radius: 7px;
-  font-weight: 800;
-  cursor: pointer;
-}
-.clips-message {
-  padding: 40px 0;
-  color: #666a72;
-  text-align: center;
-}
-
 .clips-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 280px));
@@ -129,7 +76,7 @@ box-sizing: border-box;
   box-shadow: 0 14px 32px rgba(16, 18, 24, 0.16);
 }
 
-.clip-thumbnail-button {
+.clip-thumbnail-btn {
   position: relative;
   display: block;
   width: 100%;
@@ -149,7 +96,7 @@ box-sizing: border-box;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.clip-thumbnail-button:hover .clip-thumbnail {
+.clip-thumbnail-btn:hover .clip-thumbnail {
   opacity: 0.78;
   transform: scale(1.04);
 }
@@ -204,7 +151,7 @@ box-sizing: border-box;
   -webkit-line-clamp: 2;
 }
 
-.watch-clip-button {
+.watch-clip-btn {
   margin-top: 14px;
 padding: 8px 13px;
   color: #ffffff;
@@ -215,7 +162,7 @@ padding: 8px 13px;
   cursor: pointer;
 }
 
-.watch-clip-button:hover {
+.watch-clip-btn:hover {
   background: #b80500;
 }
 
@@ -238,7 +185,7 @@ padding: 8px 13px;
   border-radius: 16px;
 }
 
-.clip-close-button {
+.clip-close-btn {
   position: absolute;
   top: 12px;
   right: 14px;
@@ -299,10 +246,6 @@ padding: 8px 13px;
 }
 
 @media (max-width: 650px) {
-  .clips-page {
-    padding: 40px 20px;
-  }
-
   .clips-grid {
   grid-template-columns: 1fr;
 }

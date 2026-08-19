@@ -1,14 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  serverTimestamp,
-  updateDoc,
-  writeBatch,
-} from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp, updateDoc, writeBatch } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 import "./AdminGuides.css";
 
@@ -221,7 +212,7 @@ const getYouTubeEmbedUrl = (url) => {
   }
 };
 
-const AdminGuides = () => {
+function AdminGuides() {
   const [categories, setCategories] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
   const [categoryForm, setCategoryForm] = useState(emptyCategory);
@@ -555,105 +546,75 @@ const AdminGuides = () => {
   };
 
   return (
-    <section className="admin-guides">
-      <div className="admin-guides-heading">
+    <section className="w-full">
+      <div className="mb-6 flex flex-col items-start justify-between gap-5 min-[701px]:flex-row min-[701px]:items-center">
         <div>
-          <p>EXISTING GUIDE CONTENT</p>
-          <h2>Manage Guide Categories</h2>
+          <p className="mb-[5px] text-xs font-extrabold tracking-[1.5px] text-[#e10600]">
+            EXISTING GUIDE CONTENT
+          </p>
+          <h2 className="m-0 text-[30px] text-[#191b20]">Manage Guide Categories</h2>
         </div>
 
         {categories.length === 0 && (
-          <button
-            className="import-guides-button"
-            type="button"
-            onClick={importExistingGuides}
-          >
+          <button className="cursor-pointer rounded-lg border-0 bg-[#e10600] px-[18px] py-[11px] font-extrabold text-white hover:bg-[#b80500]" type="button" onClick={importExistingGuides} >
             Import Existing Guides
           </button>
         )}
       </div>
 
-      {message && <p className="guide-message">{message}</p>}
+      {message && <p className="mb-5 rounded-md border-l-4 border-[#e10600] bg-white px-[15px] py-3 text-[#282a30]">{message}</p>}
 
-      <div className="guide-management-forms">
-        <form className="guide-form" onSubmit={saveCategory}>
-          <div className="guide-form-heading">
-            <h3>
+      <div className="grid grid-cols-1 gap-[22px] min-[1051px]:grid-cols-2">
+        <form className="guide-form flex flex-col gap-[9px] rounded-[14px] border border-gray-200 bg-white p-[18px] shadow-md min-[701px]:p-6" onSubmit={saveCategory}>
+          <div className="mb-2 flex items-center justify-between gap-[15px]">
+            <h3 className="m-0 text-[21px] text-[#202229]">
               {editingCategoryId
                 ? "Update Category"
                 : "Add Category"}
             </h3>
 
             {editingCategoryId && (
-              <button type="button" onClick={resetCategoryForm}>
+              <button className="cursor-pointer rounded-md border-0 bg-gray-500 px-[11px] py-[7px] text-white" type="button" onClick={resetCategoryForm}>
                 Cancel
               </button>
             )}
           </div>
 
           <label>Category title</label>
-          <input
-            name="title"
-            value={categoryForm.title}
-            onChange={handleCategoryChange}
-            required
-          />
+          <input name="title" value={categoryForm.title} onChange={handleCategoryChange} required />
 
           <label>Category description</label>
-          <textarea
-            name="description"
-            value={categoryForm.description}
-            onChange={handleCategoryChange}
-            rows="3"
-          />
+          <textarea name="description" value={categoryForm.description} onChange={handleCategoryChange} rows="3" />
 
           <label>Card layout</label>
-          <select
-            name="layout"
-            value={categoryForm.layout}
-            onChange={handleCategoryChange}
-          >
+          <select name="layout" value={categoryForm.layout} onChange={handleCategoryChange} >
             <option value="grid">Grid</option>
             <option value="slider">Horizontal slider</option>
           </select>
 
           <label>Category order</label>
-          <input
-            name="order"
-            type="number"
-            min="1"
-            value={categoryForm.order}
-            onChange={handleCategoryChange}
-            required
-          />
+          <input name="order" type="number" min="1" value={categoryForm.order} onChange={handleCategoryChange} required />
 
-          <button className="guide-save-button" type="submit">
+          <button className="guide-save-btn" type="submit">
             {editingCategoryId
               ? "Update category"
               : "Add category"}
           </button>
         </form>
 
-        <form className="guide-form" onSubmit={saveCard}>
-          <div className="guide-form-heading">
-            <h3>{editingCardId ? "Update Card" : "Add Card"}</h3>
+        <form className="guide-form flex flex-col gap-[9px] rounded-[14px] border border-gray-200 bg-white p-[18px] shadow-md min-[701px]:p-6" onSubmit={saveCard}>
+          <div className="mb-2 flex items-center justify-between gap-[15px]">
+            <h3 className="m-0 text-[21px] text-[#202229]">{editingCardId ? "Update Card" : "Add Card"}</h3>
 
             {editingCardId && (
-              <button type="button" onClick={resetCardForm}>
+              <button className="cursor-pointer rounded-md border-0 bg-gray-500 px-[11px] py-[7px] text-white" type="button" onClick={resetCardForm}>
                 Cancel
               </button>
             )}
           </div>
 
           <label>Choose category</label>
-          <select
-            value={selectedCategoryId}
-            onChange={(event) => {
-              setSelectedCategoryId(event.target.value);
-              resetCardForm();
-            }}
-            required
-          >
+          <select value={selectedCategoryId} onChange={(event) => { setSelectedCategoryId(event.target.value); resetCardForm(); }} required >
             <option value="">Select category</option>
 
             {categories.map((category) => (
@@ -664,67 +625,35 @@ const AdminGuides = () => {
           </select>
 
           <label>Card type</label>
-          <select
-            name="type"
-            value={cardForm.type}
-            onChange={handleCardChange}
-          >
+          <select name="type" value={cardForm.type} onChange={handleCardChange} >
             <option value="text">Text card</option>
             <option value="video">YouTube video card</option>
           </select>
 
           <label>Small label</label>
-          <input
-            name="label"
-            value={cardForm.label}
-            onChange={handleCardChange}
-            placeholder="Example: DAY 1"
-          />
+          <input name="label" value={cardForm.label} onChange={handleCardChange} placeholder="Example: DAY 1" />
 
           <label>Card title</label>
-          <input
-            name="title"
-            value={cardForm.title}
-            onChange={handleCardChange}
-            required
-          />
+          <input name="title" value={cardForm.title} onChange={handleCardChange} required />
 
           {cardForm.type === "text" && (
             <>
               <label>Description</label>
-              <textarea
-                name="description"
-                value={cardForm.description}
-                onChange={handleCardChange}
-                rows="4"
-              />
+              <textarea name="description" value={cardForm.description} onChange={handleCardChange} rows="4" />
             </>
           )}
 
           {cardForm.type === "video" && (
             <>
               <label>YouTube link</label>
-              <input
-                name="videoUrl"
-                type="url"
-                value={cardForm.videoUrl}
-                onChange={handleCardChange}
-                required
-              />
+              <input name="videoUrl" type="url" value={cardForm.videoUrl} onChange={handleCardChange} required />
             </>
           )}
 
           <label>Card order</label>
-          <input
-            name="order"
-            type="number"
-            min="1"
-            value={cardForm.order}
-            onChange={handleCardChange}
-            required
-          />
+          <input name="order" type="number" min="1" value={cardForm.order} onChange={handleCardChange} required />
 
-          <button className="guide-save-button" type="submit">
+          <button className="guide-save-btn" type="submit">
             {editingCardId ? "Update card" : "Add card"}
           </button>
         </form>
@@ -743,18 +672,11 @@ const AdminGuides = () => {
               </div>
 
               <div className="guide-category-actions">
-                <button
-                  type="button"
-                  onClick={() => editCategory(category)}
-                >
+                <button type="button" onClick={() => editCategory(category)} >
                   Edit category
                 </button>
 
-                <button
-                  className="delete-guide-button"
-                  type="button"
-                  onClick={() => removeCategory(category)}
-                >
+                <button className="delete-guide-btn" type="button" onClick={() => removeCategory(category)} >
                   Delete category
                 </button>
               </div>
@@ -764,11 +686,7 @@ const AdminGuides = () => {
               {category.cards.map((card) => (
                 <div className="admin-guide-card" key={card.id}>
                   {card.type === "video" && card.embedUrl && (
-                    <iframe
-                      src={card.embedUrl}
-                      title={card.title}
-                      allowFullScreen
-                    />
+                    <iframe src={card.embedUrl} title={card.title} allowFullScreen />
                   )}
 
                   <div className="admin-guide-card-content">
@@ -779,17 +697,11 @@ const AdminGuides = () => {
                     {card.description && <p>{card.description}</p>}
 
                     <div className="admin-guide-actions">
-                      <button
-                        type="button"
-                        onClick={() => editCard(category.id, card)}
-                      >
+                      <button type="button" onClick={() => editCard(category.id, card)} >
                         Edit
                       </button>
 
-                      <button
-                        className="delete-guide-button"
-                        type="button"
-                        onClick={() =>
+                      <button className="delete-guide-btn" type="button" onClick={() =>
                           removeCard(category.id, card.id)
                         }
                       >
@@ -805,6 +717,6 @@ const AdminGuides = () => {
       </div>
     </section>
   );
-};
+}
 
 export default AdminGuides;

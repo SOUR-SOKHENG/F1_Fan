@@ -1,12 +1,7 @@
-import {
-  deleteDoc,
-  doc,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { deleteDoc, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 
-const AdminNewsActions = ({ post }) => {
+function AdminNewsActions({ post }) {
   const handleEditPost = async () => {
     const newTitle = window.prompt("Edit the news title:", post.title);
 
@@ -59,23 +54,15 @@ const AdminNewsActions = ({ post }) => {
 
   return (
     <div className="news-admin-actions">
-      <button
-        className="edit-news-button"
-        type="button"
-        onClick={handleEditPost}
-      >
+      <button className="edit-news-btn" type="button" onClick={handleEditPost} >
         Edit
       </button>
 
-      <button
-        className="delete-news-button"
-        type="button"
-        onClick={handleDeletePost}
-      >
+      <button className="delete-news-btn" type="button" onClick={handleDeletePost} >
         Delete
       </button>
     </div>
   );
-};
+}
 
 export default AdminNewsActions;

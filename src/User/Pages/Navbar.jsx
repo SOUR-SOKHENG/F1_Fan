@@ -3,45 +3,53 @@ import F1 from "../../assets/Media/F1_logo.jpg";
 import "../Css/Overall.css";
 import { useAuth } from "../../context/useAuth";
 
-const Navbar = () => {
+function Navbar() {
   const { user, isAdmin, logout } = useAuth();
+
   const closeMenu = () => {
     const toggle = document.getElementById("nav-toggle");
-    if (toggle) toggle.checked = false;
+
+    if (toggle) {
+      toggle.checked = false;
+    }
+  };
+
+  const handleLogout = () => {
+    closeMenu();
+    logout();
   };
 
   return (
     <div>
-      <nav className="navbar " aria-label="Primary">
-        <div className="nav_inner">
+      <nav
+        className="navbar sticky top-0 z-[1000] m-0 bg-[rgba(142,3,3,0.944)] p-0 max-sm:h-[9vh]"
+        aria-label="Primary"
+      >
+        <div className="nav_inner mx-auto flex max-w-[1100px] items-center justify-between px-4 py-3">
           <div className="brand">
-            <img src={F1} alt="F1_logo" className="F1_logo w-full  " />
+            <img src={F1} alt="F1 logo" className="F1_logo w-full" />
           </div>
           <input
+            id="nav-toggle"
             type="checkbox"
+            className="toggle"
             aria-controls="primary-menu"
             aria-expanded="false"
-            id="nav-toggle"
-            className="toggle"
           />
           <label
             htmlFor="nav-toggle"
             className="toggle-label"
             aria-label="Toggle navigation"
           >
-            <span></span>
-            <span></span>
-            <span></span>
+            <span />
+            <span />
+            <span />
           </label>
           <ul id="primary-menu" className="menu">
             <li>
-              {" "}
-              <NavLink to={"/"}></NavLink>
-            </li>
-            <li>
               <NavLink
-                to={"/Home"}
-                className=" navlink text-decoration-none text-2xl  font-TitilliumWeb-BoldItalic "
+                to="/Home"
+                className="navlink text-decoration-none text-2xl font-TitilliumWeb-BoldItalic"
                 onClick={closeMenu}
               >
                 Home
@@ -49,8 +57,8 @@ const Navbar = () => {
             </li>
             <li>
               <NavLink
-                className="  navlink text-decoration-none text-2xl "
-                to={"/About"}
+                to="/About"
+                className="navlink text-decoration-none text-2xl"
                 onClick={closeMenu}
               >
                 Guides
@@ -58,8 +66,8 @@ const Navbar = () => {
             </li>
             <li>
               <NavLink
-                className="  navlink text-decoration-none text-2xl  "
-                to={"/Team"}
+                to="/Team"
+                className="navlink text-decoration-none text-2xl"
                 onClick={closeMenu}
               >
                 Team
@@ -67,8 +75,8 @@ const Navbar = () => {
             </li>
             <li>
               <NavLink
-                className=" navlink text-decoration-none text-2xl "
-                to={"/News"}
+                to="/News"
+                className="navlink text-decoration-none text-2xl"
                 onClick={closeMenu}
               >
                 News
@@ -77,8 +85,8 @@ const Navbar = () => {
             {user && (
               <li>
                 <NavLink
+                  to="/Saved"
                   className="navlink text-decoration-none text-2xl"
-                  to={"/Saved"}
                   onClick={closeMenu}
                 >
                   Saved
@@ -88,8 +96,8 @@ const Navbar = () => {
             {user && !isAdmin && (
               <li>
                 <NavLink
+                  to="/Profile"
                   className="navlink text-decoration-none text-2xl"
-                  to={"/Profile"}
                   onClick={closeMenu}
                 >
                   Profile
@@ -98,8 +106,8 @@ const Navbar = () => {
             )}
             <li>
               <NavLink
-                className=" navlink text-decoration-none text-2xl "
-                to={"/Clips"}
+                to="/Clips"
+                className="navlink text-decoration-none text-2xl"
                 onClick={closeMenu}
               >
                 Clip
@@ -108,8 +116,9 @@ const Navbar = () => {
             {user ? (
               <li>
                 <button
+                  type="button"
                   className="navlink text-2xl border-0 bg-transparent"
-                  onClick={() => logout()}
+                  onClick={handleLogout}
                 >
                   Log out
                 </button>
@@ -117,8 +126,8 @@ const Navbar = () => {
             ) : (
               <li>
                 <NavLink
+                  to="/Login"
                   className="navlink text-decoration-none text-2xl"
-                  to={"/Login"}
                   onClick={closeMenu}
                 >
                   Log in
@@ -127,13 +136,12 @@ const Navbar = () => {
             )}
           </ul>
         </div>
-        
-            </nav>
+      </nav>
 
       {isAdmin && (
         <NavLink
-          className="admin-floating-back"
           to="/Admin"
+          className="fixed bottom-3.5 right-3.5 z-[2500] inline-flex items-center justify-center rounded-3xl border-2 border-white bg-[#e10600] px-[13px] py-[9px] text-xs font-extrabold text-white no-underline shadow-xl transition hover:-translate-y-1 hover:bg-[#202229] hover:text-white sm:bottom-6 sm:right-6 sm:px-4 sm:py-2.5 sm:text-sm"
           aria-label="Back to admin dashboard"
         >
           ← Back
@@ -141,6 +149,6 @@ const Navbar = () => {
       )}
     </div>
   );
-};
+}
 
 export default Navbar;

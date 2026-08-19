@@ -1,16 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  deleteDoc,
-  doc,
-  onSnapshot,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
+import { deleteDoc, doc, onSnapshot, serverTimestamp, setDoc } from "firebase/firestore";
 import { db } from "../../../lib/firebase";
 import { useAuth } from "../../../context/useAuth";
 
-const SavePostButton = ({ postId }) => {
+function SavePostBtn({ postId }) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [isSaved, setIsSaved] = useState(false);
@@ -22,13 +16,13 @@ const SavePostButton = ({ postId }) => {
       return;
     }
 
-    const savedPostRef = doc(db, "users", user.uid, "savedPosts", postId);
+    const savedRef = doc(db, "users", user.uid, "savedPosts", postId);
 
-    const stopListening = onSnapshot(savedPostRef, (savedPostDocument) => {
-      setIsSaved(savedPostDocument.exists());
+    const stop = onSnapshot(savedRef, (savedDoc) => {
+      setIsSaved(savedDoc.exists());
     });
 
-    return stopListening;
+    return stop;
   }, [user, postId]);
 
   const handleSave = async () => {
@@ -37,15 +31,15 @@ const SavePostButton = ({ postId }) => {
       return;
     }
 
-    const savedPostRef = doc(db, "users", user.uid, "savedPosts", postId);
+    const savedRef = doc(db, "users", user.uid, "savedPosts", postId);
 
     try {
       setSaving(true);
 
       if (isSaved) {
-        await deleteDoc(savedPostRef);
+        await deleteDoc(savedRef);
       } else {
-        await setDoc(savedPostRef, {
+        await setDoc(savedRef, {
           postId,
           savedAt: serverTimestamp(),
         });
@@ -59,15 +53,10 @@ const SavePostButton = ({ postId }) => {
   };
 
   return (
-    <button
-      className={isSaved ? "save-post-button saved" : "save-post-button"}
-      type="button"
-      onClick={handleSave}
-      disabled={saving}
-    >
+    <button className={isSaved ? "save-post-btn saved" : "save-post-btn"} type="button" onClick={handleSave} disabled={saving} >
       {isSaved ? "Saved" : "Save for later"}
     </button>
   );
-};
+}
 
-export default SavePostButton;
+export default SavePostBtn;

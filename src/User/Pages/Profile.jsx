@@ -1,16 +1,11 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import {
-  doc,
-  getDoc,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 import { useAuth } from "../../context/useAuth";
 import "../Css/Profile.css";
 
-const Profile = () => {
+function Profile() {
   const { user, loading: authLoading } = useAuth();
 
   const [profile, setProfile] = useState({
@@ -34,7 +29,7 @@ const Profile = () => {
   const loadProfile = async () => {
     try {
       const [
-        profileSnapshot,
+        profileDoc,
         teamsResponse,
         driversResponse,
       ] = await Promise.all([
@@ -54,8 +49,8 @@ const Profile = () => {
       const teamsData = await teamsResponse.json();
       const driversData = await driversResponse.json();
 
-      if (profileSnapshot.exists()) {
-        const profileData = profileSnapshot.data();
+      if (profileDoc.exists()) {
+        const profileData = profileDoc.data();
 
         setProfile({
           displayName:
@@ -73,10 +68,10 @@ const Profile = () => {
         }));
       }
 
-      const constructorList =
+      const teamList =
         teamsData?.MRData?.ConstructorTable?.Constructors || [];
 
-      const currentTeams = constructorList
+      const currentTeams = teamList
         .map((constructor) => ({
           id: constructor.constructorId,
           name: constructor.name,
@@ -85,10 +80,10 @@ const Profile = () => {
           firstTeam.name.localeCompare(secondTeam.name)
         );
 
-      const apiDriverList =
+      const driverList =
         driversData?.MRData?.DriverTable?.Drivers || [];
 
-      const currentDrivers = apiDriverList
+      const currentDrivers = driverList
         .map(
           (driver) =>
             `${driver.givenName} ${driver.familyName}`
@@ -163,7 +158,11 @@ const Profile = () => {
   };
 
   if (authLoading) {
-    return <p className="profile-status">Checking your account...</p>;
+    return (
+      <p className="m-0 grid min-h-[60vh] place-items-center bg-[#f4f5f7] text-gray-600">
+        Checking your account...
+      </p>
+    );
   }
 
   if (!user) {
@@ -171,7 +170,11 @@ const Profile = () => {
   }
 
   if (loading) {
-    return <p className="profile-status">Loading your profile...</p>;
+    return (
+      <p className="m-0 grid min-h-[60vh] place-items-center bg-[#f4f5f7] text-gray-600">
+        Loading your profile...
+      </p>
+    );
   }
 
   return (
@@ -207,45 +210,25 @@ const Profile = () => {
         </div>
       </section>
 
-      <form className="profile-form" onSubmit={handleSave}>
-        <div className="profile-form-heading">
-          <p>PERSONAL DETAILS</p>
-          <h2>Edit Your Profile</h2>
+      <form
+        className="profile-form flex flex-col gap-2 rounded-[18px] border border-gray-200 bg-white p-6 shadow-lg sm:p-[34px]"
+        onSubmit={handleSave}
+      >
+        <div className="mb-3">
+          <p className="mb-1 text-xs font-extrabold tracking-[1.6px] text-[#e10600]">
+            PERSONAL DETAILS
+          </p>
+          <h2 className="m-0 text-[29px]">Edit Your Profile</h2>
         </div>
 
         <label htmlFor="profile-name">Your name</label>
-        <input
-          id="profile-name"
-          name="displayName"
-          type="text"
-          value={profile.displayName}
-          onChange={handleChange}
-          required
-        />
+        <input id="profile-name" name="displayName" type="text" value={profile.displayName} onChange={handleChange} required />
 
         <label htmlFor="profile-age">Age</label>
-        <input
-          id="profile-age"
-          name="age"
-          type="number"
-          min="1"
-          max="120"
-          value={profile.age}
-          onChange={handleChange}
-          required
-        />
+        <input id="profile-age" name="age" type="number" min="1" max="120" value={profile.age} onChange={handleChange} required />
 
         <label htmlFor="driver-idol">Driver idol</label>
-        <input
-          id="driver-idol"
-          name="driverIdol"
-          type="text"
-          list="current-drivers"
-          value={profile.driverIdol}
-          onChange={handleChange}
-          placeholder="Example: Michael Schumacher"
-          required
-        />
+        <input id="driver-idol" name="driverIdol" type="text" list="current-drivers" value={profile.driverIdol} onChange={handleChange} placeholder="Example: Michael Schumacher" required />
 
         <datalist id="current-drivers">
           {drivers.map((driver) => (
@@ -256,13 +239,7 @@ const Profile = () => {
         <label htmlFor="favorite-team">
           Favourite team on the grid
         </label>
-        <select
-          id="favorite-team"
-          name="favoriteTeam"
-          value={profile.favoriteTeam}
-          onChange={handleChange}
-          required
-        >
+        <select id="favorite-team" name="favoriteTeam" value={profile.favoriteTeam} onChange={handleChange} required >
           <option value="">Choose your favourite team</option>
 
           {teams.map((team) => (
@@ -275,13 +252,7 @@ const Profile = () => {
         <label htmlFor="championship-pick">
           Team you want to win
         </label>
-        <select
-          id="championship-pick"
-          name="championshipPick"
-          value={profile.championshipPick}
-          onChange={handleChange}
-          required
-        >
+        <select id="championship-pick" name="championshipPick" value={profile.championshipPick} onChange={handleChange} required >
           <option value="">Choose your championship team</option>
 
           {teams.map((team) => (
@@ -294,26 +265,20 @@ const Profile = () => {
         <label htmlFor="racing-number">
           Your personal racing number
         </label>
-        <input
-          id="racing-number"
-          name="racingNumber"
-          type="number"
-          min="1"
-          max="99"
-          value={profile.racingNumber}
-          onChange={handleChange}
-          placeholder="1–99"
-          required
-        />
+        <input id="racing-number" name="racingNumber" type="number" min="1" max="99" value={profile.racingNumber} onChange={handleChange} placeholder="1–99" required />
 
-        <small className="racing-number-help">
+        <small className="text-gray-500">
           Choose a number from 1 to 99, like an F1 driver.
         </small>
 
-        {message && <p className="profile-message">{message}</p>}
+        {message && (
+          <p className="mb-0 mt-3 rounded-md border-l-4 border-[#e10600] bg-gray-100 px-3.5 py-3 text-gray-700">
+            {message}
+          </p>
+        )}
 
         <button
-          className="profile-save-button"
+          className="mt-3.5 w-fit rounded-lg border-0 bg-[#e10600] px-6 py-3 font-extrabold text-white hover:bg-[#b80500] disabled:cursor-not-allowed disabled:opacity-60"
           type="submit"
           disabled={saving}
         >
@@ -322,6 +287,6 @@ const Profile = () => {
       </form>
     </main>
   );
-};
+}
 
 export default Profile;

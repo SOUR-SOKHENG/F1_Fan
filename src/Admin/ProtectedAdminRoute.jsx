@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
 
-const ProtectedAdminRoute = ({ children }) => {
+function ProtectedAdminRoute({ children }) {
   const { user, isAdmin, loading } = useAuth();
 
   if (loading) {
@@ -17,6 +17,6 @@ const ProtectedAdminRoute = ({ children }) => {
   }
 
   return children;
-};
+}
 
 export default ProtectedAdminRoute;

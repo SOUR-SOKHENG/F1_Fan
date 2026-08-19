@@ -1,13 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, onSnapshot, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 import { useAuth } from "../../context/useAuth";
 import "./AdminNews.css";
@@ -21,7 +13,7 @@ const emptyForm = {
   sourceUrl: "",
 };
 
-const AdminNews = () => {
+function AdminNews() {
   const { user } = useAuth();
 
   const [posts, setPosts] = useState([]);
@@ -254,55 +246,47 @@ const AdminNews = () => {
     setSelectedDate("");
   };
   return (
-    <main className="admin-news-page">
-      <div className="admin-news-heading">
+    <main className="min-h-[75vh] w-full">
+      <div className="mb-6 flex flex-col items-start justify-between gap-5 min-[761px]:flex-row min-[761px]:items-center">
         <div>
-          <p>NEWS MANAGEMENT</p>
-          <h2>Published News</h2>
+          <p className="mb-[5px] text-xs font-black tracking-[1.5px] text-[#e10600]">
+            NEWS MANAGEMENT
+          </p>
+          <h2 className="m-0 text-[30px] text-[#191b20]">Published News</h2>
         </div>
 
-        <div className="admin-news-heading-actions">
-          <span>{posts.length} news</span>
+        <div className="flex w-full flex-col items-stretch gap-[11px] min-[521px]:w-auto min-[521px]:flex-row min-[521px]:items-center">
+          <span className="rounded-[18px] bg-[#202229] px-[13px] py-2 text-center text-xs font-extrabold text-white">
+            {posts.length} news
+          </span>
 
-          <button type="button" onClick={openCreateForm}>
+          <button className="cursor-pointer rounded-lg border-0 bg-[#e10600] px-4 py-2.5 font-extrabold text-white hover:bg-[#b80500]" type="button" onClick={openCreateForm}>
             + Add New News
           </button>
         </div>
       </div>
 
-      {message && !showForm && <p className="admin-news-message">{message}</p>}
-      <section className="admin-news-filters">
-        <label className="admin-news-search">
+      {message && !showForm && <p className="mb-5 rounded-md border-l-4 border-[#e10600] bg-white px-[15px] py-3 text-gray-700">{message}</p>}
+      <section className="mb-[27px] grid grid-cols-1 items-end gap-[13px] rounded-xl border border-gray-200 bg-white p-[18px] shadow-md min-[761px]:grid-cols-2 min-[1001px]:grid-cols-[minmax(240px,1fr)_180px_180px_auto]">
+        <label className="text-xs font-extrabold text-gray-700">
           Search news
-          <input
-            type="search"
-            value={searchText}
-            onChange={(event) => setSearchText(event.target.value)}
-            placeholder="Search title, summary or article"
-          />
+          <input className="mt-[7px] block w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2.5 outline-none focus:border-[#e10600] focus:bg-white focus:ring-4 focus:ring-red-100" type="search" value={searchText} onChange={(event) => setSearchText(event.target.value)} placeholder="Search title, summary or article" />
         </label>
 
-        <label>
+        <label className="text-xs font-extrabold text-gray-700">
           Sort news
-          <select
-            value={sortOrder}
-            onChange={(event) => setSortOrder(event.target.value)}
-          >
+          <select className="mt-[7px] block w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2.5 outline-none focus:border-[#e10600] focus:bg-white focus:ring-4 focus:ring-red-100" value={sortOrder} onChange={(event) => setSortOrder(event.target.value)} >
             <option value="newest">Newest first</option>
             <option value="oldest">Oldest first</option>
           </select>
         </label>
 
-        <label>
+        <label className="text-xs font-extrabold text-gray-700">
           Date added
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={(event) => setSelectedDate(event.target.value)}
-          />
+          <input className="mt-[7px] block w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2.5 outline-none focus:border-[#e10600] focus:bg-white focus:ring-4 focus:ring-red-100" type="date" value={selectedDate} onChange={(event) => setSelectedDate(event.target.value)} />
         </label>
 
-        <button type="button" onClick={clearFilters}>
+        <button className="cursor-pointer rounded-lg border-0 bg-gray-200 px-[15px] py-2.5 font-extrabold text-gray-700 hover:bg-[#25272d] hover:text-white" type="button" onClick={clearFilters}>
           Clear filters
         </button>
       </section>
@@ -329,23 +313,8 @@ const AdminNews = () => {
           ) : (
             <section className="admin-news-grid">
               {visiblePosts.map((post) => (
-                <article
-                  className="admin-news-card"
-                  key={post.id}
-                  role="button"
-                  tabIndex="0"
-                  onClick={() => openNewsDetails(post)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter" || event.key === " ") {
-                      openNewsDetails(post);
-                    }
-                  }}
-                >
-                  <img
-                    className="admin-news-card-thumbnail"
-                    src={post.thumbnailUrl}
-                    alt={post.title}
-                  />
+                <article className="admin-news-card" key={post.id} role="button" tabIndex="0" onClick={() => openNewsDetails(post)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { openNewsDetails(post); } }} >
+                  <img className="admin-news-card-thumbnail" src={post.thumbnailUrl} alt={post.title} />
 
                   <div className="admin-news-card-body">
                     <div className="admin-news-card-top">
@@ -360,25 +329,11 @@ const AdminNews = () => {
                     <p>{post.summary}</p>
 
                     <div className="admin-news-card-actions">
-                      <button
-                        className="edit-news-button"
-                        type="button"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          openUpdateForm(post);
-                        }}
-                      >
+                      <button className="edit-news-btn" type="button" onClick={(event) => { event.stopPropagation(); openUpdateForm(post); }} >
                         Update
                       </button>
 
-                      <button
-                        className="delete-news-button"
-                        type="button"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          deleteNews(post);
-                        }}
-                      >
+                      <button className="delete-news-btn" type="button" onClick={(event) => { event.stopPropagation(); deleteNews(post); }} >
                         Delete
                       </button>
                     </div>
@@ -392,24 +347,12 @@ const AdminNews = () => {
 
       {selectedPost && (
         <div className="admin-news-modal" onClick={closeNewsDetails}>
-          <article
-            className="admin-news-detail-modal"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <button
-              className="admin-news-modal-close"
-              type="button"
-              onClick={closeNewsDetails}
-              aria-label="Close news details"
-            >
+          <article className="admin-news-detail-modal" onClick={(event) => event.stopPropagation()} >
+            <button className="admin-news-modal-close" type="button" onClick={closeNewsDetails} aria-label="Close news details" >
               ×
             </button>
 
-            <img
-              className="admin-news-detail-image"
-              src={selectedPost.thumbnailUrl}
-              alt={selectedPost.title}
-            />
+            <img className="admin-news-detail-image" src={selectedPost.thumbnailUrl} alt={selectedPost.title} />
 
             <div className="admin-news-detail-content">
               <div className="admin-news-detail-meta">
@@ -434,35 +377,17 @@ const AdminNews = () => {
               )}
 
               {selectedPost.type === "external" && selectedPost.sourceUrl && (
-                <a
-                  className="admin-news-detail-link"
-                  href={selectedPost.sourceUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a className="admin-news-detail-link" href={selectedPost.sourceUrl} target="_blank" rel="noreferrer" >
                   Open original news
                 </a>
               )}
 
               <div className="admin-news-detail-actions">
-                <button
-                  type="button"
-                  onClick={() => {
-                    closeNewsDetails();
-                    openUpdateForm(selectedPost);
-                  }}
-                >
+                <button type="button" onClick={() => { closeNewsDetails(); openUpdateForm(selectedPost); }} >
                   Update News
                 </button>
 
-                <button
-                  className="delete-news-button"
-                  type="button"
-                  onClick={() => {
-                    deleteNews(selectedPost);
-                    closeNewsDetails();
-                  }}
-                >
+                <button className="delete-news-btn" type="button" onClick={() => { deleteNews(selectedPost); closeNewsDetails(); }} >
                   Delete
                 </button>
               </div>
@@ -472,16 +397,8 @@ const AdminNews = () => {
       )}
       {showForm && (
         <div className="admin-news-modal" onClick={closeForm}>
-          <section
-            className="admin-news-modal-content"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <button
-              className="admin-news-modal-close"
-              type="button"
-              onClick={closeForm}
-              aria-label="Close news form"
-            >
+          <section className="admin-news-modal-content" onClick={(event) => event.stopPropagation()} >
+            <button className="admin-news-modal-close" type="button" onClick={closeForm} aria-label="Close news form" >
               ×
             </button>
 
@@ -494,11 +411,7 @@ const AdminNews = () => {
             <form onSubmit={saveNews}>
               <label>
                 News type
-                <select
-                  name="newsType"
-                  value={form.newsType}
-                  onChange={handleChange}
-                >
+                <select name="newsType" value={form.newsType} onChange={handleChange} >
                   <option value="article">Write an article</option>
 
                   <option value="external">Share external news</option>
@@ -507,85 +420,41 @@ const AdminNews = () => {
 
               <label>
                 Title
-                <input
-                  name="title"
-                  type="text"
-                  value={form.title}
-                  onChange={handleChange}
-                  placeholder="Enter the news title"
-                  required
-                />
+                <input name="title" type="text" value={form.title} onChange={handleChange} placeholder="Enter the news title" required />
               </label>
 
               <label>
                 Short summary
-                <textarea
-                  name="summary"
-                  value={form.summary}
-                  onChange={handleChange}
-                  placeholder="Write a short introduction"
-                  rows="3"
-                  required
-                />
+                <textarea name="summary" value={form.summary} onChange={handleChange} placeholder="Write a short introduction" rows="3" required />
               </label>
 
               {form.newsType === "article" && (
                 <label>
                   Article
-                  <textarea
-                    name="content"
-                    value={form.content}
-                    onChange={handleChange}
-                    placeholder="Write the full article"
-                    rows="8"
-                    required
-                  />
+                  <textarea name="content" value={form.content} onChange={handleChange} placeholder="Write the full article" rows="8" required />
                 </label>
               )}
 
               {form.newsType === "external" && (
                 <label>
                   Original news link
-                  <input
-                    name="sourceUrl"
-                    type="url"
-                    value={form.sourceUrl}
-                    onChange={handleChange}
-                    placeholder="https://example.com/news"
-                    required
-                  />
+                  <input name="sourceUrl" type="url" value={form.sourceUrl} onChange={handleChange} placeholder="https://example.com/news" required />
                 </label>
               )}
 
               <label>
                 Thumbnail image URL
-                <input
-                  name="thumbnailUrl"
-                  type="url"
-                  value={form.thumbnailUrl}
-                  onChange={handleChange}
-                  placeholder="https://example.com/image.jpg"
-                  required
-                />
+                <input name="thumbnailUrl" type="url" value={form.thumbnailUrl} onChange={handleChange} placeholder="https://example.com/image.jpg" required />
               </label>
 
               {form.thumbnailUrl && (
-                <img
-                  className="admin-news-thumbnail-preview"
-                  src={form.thumbnailUrl}
-                  alt="News thumbnail preview"
-                />
+                <img className="admin-news-thumbnail-preview" src={form.thumbnailUrl} alt="News thumbnail preview" />
               )}
 
               {message && <p className="admin-news-form-message">{message}</p>}
 
               <div className="admin-news-form-actions">
-                <button
-                  className="admin-news-cancel-button"
-                  type="button"
-                  onClick={closeForm}
-                  disabled={posting}
-                >
+                <button className="admin-news-cancel-btn" type="button" onClick={closeForm} disabled={posting} >
                   Cancel
                 </button>
 
@@ -603,6 +472,6 @@ const AdminNews = () => {
       )}
     </main>
   );
-};
+}
 
 export default AdminNews;

@@ -1,28 +1,3 @@
-.news-page {
-  max-width: 1150px;
-  min-height: 80vh;
-  margin: 40px auto;
-  padding: 0 20px;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.news-page > h1 {
-  margin-bottom: 30px;
-  font-size: 42px;
-  text-transform: uppercase;
-  border-left: 7px solid #e10600;
-  padding-left: 15px;
-}
-
-.news-list {
-  margin-top: 45px;
-}
-
-.news-list > h2 {
-  margin-bottom: 22px;
-  font-size: 30px;
-}
-
 .news-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -97,7 +72,7 @@
   text-decoration: underline;
 }
 
-.save-post-button {
+.save-post-btn {
   display: block;
   width: 100%;
   margin-top: 16px;
@@ -110,13 +85,13 @@
   cursor: pointer;
 }
 
-.save-post-button:hover,
-.save-post-button.saved {
+.save-post-btn:hover,
+.save-post-btn.saved {
   background-color: #e10600;
   color: white;
 }
 
-.save-post-button:disabled {
+.save-post-btn:disabled {
   cursor: not-allowed;
   opacity: 0.6;
 }
@@ -128,15 +103,6 @@
 }
 
 @media (max-width: 580px) {
-  .news-page {
-    margin-top: 25px;
-    padding: 0 14px;
-  }
-
-  .news-page > h1 {
-    font-size: 32px;
-  }
-
   .news-grid {
     grid-template-columns: 1fr;
   }
@@ -158,38 +124,38 @@
   margin-top: 16px;
 }
 
-.news-user-actions .save-post-button {
+.news-user-actions .save-post-btn {
   grid-column: 1 / -1;
   width: 100%;
   margin-top: 0;
 }
 
-.like-post-button,
-.share-post-button {
+.like-post-btn,
+.share-post-btn {
   padding: 9px 12px;
   border-radius: 7px;
   font-weight: 700;
   cursor: pointer;
 }
 
-.like-post-button {
+.like-post-btn {
   border: 1px solid #e10600;
   background-color: transparent;
   color: #b90400;
 }
 
-.like-post-button:hover,
-.like-post-button.liked {
+.like-post-btn:hover,
+.like-post-btn.liked {
   background-color: #e10600;
   color: white;
 }
 
-.share-post-button {
+.share-post-btn {
   border: 1px solid #333;
   background-color: #333;
   color: white;
 }
 
-.share-post-button:hover {
+.share-post-btn:hover {
   background-color: #111;
 }

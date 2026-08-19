@@ -1,22 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  collection,
-  doc,
-  getDoc,
-  onSnapshot,
-} from "firebase/firestore";
+import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 import { useAuth } from "../../context/useAuth";
-import SavePostButton from "../Components/News/SavePostButton";
+import SavePostBtn from "../Components/News/SavePostButton";
 import "../Css/News.css";
 
-const SavedNews = () => {
+function SavedNews() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
 
   const [savedPosts, setSavedPosts] = useState([]);
-  const [loadingPosts, setLoadingPosts] = useState(true);
+  const [loadingSaved, setLoadingSaved] = useState(true);
 
   useEffect(() => {
     if (loading) {
@@ -39,19 +34,19 @@ const SavedNews = () => {
       savedPostsRef,
       async (snapshot) => {
         try {
-          const postRequests = snapshot.docs.map(async (savedDocument) => {
-            const postDocument = await getDoc(
-              doc(db, "posts", savedDocument.id)
+          const postRequests = snapshot.docs.map(async (savedDoc) => {
+            const postDoc = await getDoc(
+              doc(db, "posts", savedDoc.id)
             );
 
-            if (!postDocument.exists()) {
+            if (!postDoc.exists()) {
               return null;
             }
 
             return {
-              id: postDocument.id,
-              ...postDocument.data(),
-              savedAt: savedDocument.data().savedAt,
+              id: postDoc.id,
+              ...postDoc.data(),
+              savedAt: savedDoc.data().savedAt,
             };
           });
 
@@ -70,7 +65,7 @@ const SavedNews = () => {
         } catch (error) {
           console.error("Could not load saved news:", error);
         } finally {
-          setLoadingPosts(false);
+          setLoadingSaved(false);
         }
       }
     );
@@ -78,27 +73,25 @@ const SavedNews = () => {
     return stopListening;
   }, [user, loading, navigate]);
 
-  if (loading || loadingPosts) {
+  if (loading || loadingSaved) {
     return <p>Loading saved news...</p>;
   }
 
   return (
-    <main className="news-page">
-      <h1>Saved News</h1>
+    <main className="mx-auto mb-10 mt-6 min-h-[80vh] max-w-[1150px] px-3.5 font-sans sm:my-10 sm:px-5">
+      <h1 className="mb-[30px] border-l-[7px] border-[#e10600] pl-[15px] text-[32px] uppercase sm:text-[42px]">
+        Saved News
+      </h1>
 
       {savedPosts.length === 0 && (
         <p>You have not saved any news yet.</p>
       )}
 
-      <section className="news-list">
+      <section className="mt-11">
         <div className="news-grid">
           {savedPosts.map((post) => (
             <article className="news-card" key={post.id}>
-              <img
-                className="news-thumbnail"
-                src={post.thumbnailUrl}
-                alt={post.title}
-              />
+              <img className="news-thumbnail" src={post.thumbnailUrl} alt={post.title} />
 
               <div className="news-card-content">
                 <span className="news-type">
@@ -120,16 +113,12 @@ const SavedNews = () => {
                 )}
 
                 {post.type === "external" && (
-                  <a
-                    href={post.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href={post.sourceUrl} target="_blank" rel="noopener noreferrer" >
                     Read original news
                   </a>
                 )}
 
-                <SavePostButton postId={post.id} />
+                <SavePostBtn postId={post.id} />
               </div>
             </article>
           ))}
@@ -137,6 +126,6 @@ const SavedNews = () => {
       </section>
     </main>
   );
-};
+}
 
 export default SavedNews;

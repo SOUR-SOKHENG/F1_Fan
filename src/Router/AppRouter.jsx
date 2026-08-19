@@ -1,9 +1,4 @@
-import {
-  BrowserRouter,
-  Outlet,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import Home from "../User/Pages/Home";
 import About from "../User/Pages/About";
 import Team from "../User/Pages/Team";
@@ -24,9 +19,7 @@ import AdminGuides from "../Admin/Guides/AdminGuides";
 import Profile from "../User/Pages/Profile";
 import AdminUsers from "../Admin/Users/AdminUsers";
 import Banned from "../User/Pages/Banned";
-
-
-const PublicLayout = () => {
+function PublicLayout() {
   return (
     <>
       <Navbar />
@@ -34,9 +27,9 @@ const PublicLayout = () => {
       <Footer />
     </>
   );
-};
+}
 
-const AppRouter = () => {
+function AppRouter() {
   return (
     <BrowserRouter basename="/F1_Fan">
       <Routes>
@@ -72,6 +65,6 @@ const AppRouter = () => {
       </Routes>
     </BrowserRouter>
   );
-};
+}
 
 export default AppRouter;

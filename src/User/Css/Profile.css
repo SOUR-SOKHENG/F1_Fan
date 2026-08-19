@@ -98,34 +98,6 @@
   font-size: 16px;
 }
 
-.profile-form {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-  padding: 34px;
-  background: #ffffff;
-  border: 1px solid #e0e1e5;
-  border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(16, 18, 24, 0.08);
-}
-
-.profile-form-heading {
-  margin-bottom: 12px;
-}
-
-.profile-form-heading p {
-  margin: 0 0 4px;
-  color: #e10600;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 1.6px;
-}
-
-.profile-form-heading h2 {
-  margin: 0;
-  font-size: 29px;
-}
-
 .profile-form label {
   margin-top: 7px;
   color: #30323a;
@@ -153,50 +125,6 @@
   box-shadow: 0 0 0 3px rgba(225, 6, 0, 0.1);
 }
 
-.racing-number-help {
-  color: #70737b;
-}
-
-.profile-message {
-  margin: 12px 0 0;
-  padding: 11px 14px;
-  color: #30323a;
-  background: #f4f4f6;
-  border-left: 4px solid #e10600;
-  border-radius: 6px;
-}
-
-.profile-save-button {
-  width: fit-content;
-  margin-top: 14px;
-  padding: 12px 23px;
-  color: #ffffff;
-  background: #e10600;
-  border: 0;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.profile-save-button:hover {
-  background: #b80500;
-}
-
-.profile-save-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.65;
-}
-
-.profile-status {
-  min-height: 60vh;
-  display: grid;
-  place-items: center;
-  margin: 0;
-  color: #555963;
-  background: #f4f5f7;
-}
-
 @media (max-width: 900px) {
   .profile-page {
     grid-template-columns: 1fr;
@@ -213,8 +141,7 @@
     padding: 25px 15px;
   }
 
-  .profile-preview,
-  .profile-form {
+  .profile-preview {
     padding: 24px;
   }
 

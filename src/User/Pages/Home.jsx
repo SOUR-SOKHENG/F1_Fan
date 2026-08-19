@@ -3,25 +3,23 @@ import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 import Driver from "../../assets/Media/F1_driver_groupDriver.jpg";
-import Calender from "../../assets/Media/f1-calendar.jpg";
-import F1_Cru from "../../assets/Media/f1Crusel.jpg";
+import CalendarPic from "../../assets/Media/f1-calendar.jpg";
+import CarouselPic from "../../assets/Media/f1Crusel.jpg";
 import "../Css/Overall.css";
 import "../Css/Home.css";
 
-const Home = () => {
+function Home() {
   const [standings, setStandings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [previousRace, setPreviousRace] = useState(null);
+  const [prevRace, setPrevRace] = useState(null);
   const [nextRace, setNextRace] = useState(null);
   const [raceResults, setRaceResults] = useState([]);
-  const [previousRaceImage, setPreviousRaceImage] = useState("");
-  const [nextRaceImage, setNextRaceImage] = useState("");
-  const [driverImages, setDriverImages] = useState({});
+  const [prevRacePic, setPrevRacePic] = useState("");
+  const [nextRacePic, setNextRacePic] = useState("");
+  const [driverPics, setDriverPics] = useState({});
   const [homepage, setHomepage] = useState({
     announcement: "",
-    welcomeTitle: "",
-    welcomeText: "",
     firstImageUrl: "",
     secondImageUrl: "",
     thirdImageUrl: "",
@@ -103,15 +101,15 @@ const Home = () => {
         const nextEvent = nextPosterData?.events?.[0];
 
         setStandings(standingsList);
-        setPreviousRace(latestRace);
+        setPrevRace(latestRace);
         setRaceResults(latestRace?.Results || []);
         setNextRace(upcomingRace);
 
-        setPreviousRaceImage(
+        setPrevRacePic(
           previousEvent?.strPoster || previousEvent?.strThumb || "",
         );
 
-        setNextRaceImage(nextEvent?.strPoster || nextEvent?.strThumb || "");
+        setNextRacePic(nextEvent?.strPoster || nextEvent?.strThumb || "");
         const imageList = {};
 
         driversData.forEach((driver) => {
@@ -121,7 +119,7 @@ const Home = () => {
           }
         });
 
-        setDriverImages(imageList);
+        setDriverPics(imageList);
         setError(null);
       } catch (requestError) {
         setError(requestError.message);
@@ -137,16 +135,25 @@ const Home = () => {
     return () => clearInterval(refreshTimer);
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) {
+    return <p className="grid min-h-[60vh] place-items-center">Loading...</p>;
+  }
+
+  if (error) {
+    return (
+      <p className="grid min-h-[60vh] place-items-center text-red-600">
+        Error: {error}
+      </p>
+    );
+  }
 
   const half = Math.ceil(standings.length / 2);
   const firstHalf = standings.slice(0, half);
   const secondHalf = standings.slice(half);
   const championshipLeader = standings[0];
 
-  const leaderImage = championshipLeader
-    ? driverImages[championshipLeader.Driver.familyName.toLowerCase()]
+  const leaderPic = championshipLeader
+    ? driverPics[championshipLeader.Driver.familyName.toLowerCase()]
     : "";
   const renderTable = (rows) => (
     <div className="overflow-x-auto">
@@ -185,20 +192,14 @@ const Home = () => {
           const position = Number(result.position);
 
           const driverImage =
-            driverImages[result.Driver.familyName.toLowerCase()];
+            driverPics[result.Driver.familyName.toLowerCase()];
 
           return (
-            <div
-              key={result.Driver.driverId}
-              className={`podium-driver podium-position-${position}`}
-            >
+            <div key={result.Driver.driverId} className={`podium-driver podium-position-${position}`} >
               <span className="podium-number">{position}</span>
 
               {driverImage ? (
-                <img
-                  src={driverImage}
-                  alt={`${result.Driver.givenName} ${result.Driver.familyName}`}
-                />
+                <img src={driverImage} alt={`${result.Driver.givenName} ${result.Driver.familyName}`} />
               ) : (
                 <div className="driver-placeholder">
                   {result.Driver.givenName[0]}
@@ -216,80 +217,43 @@ const Home = () => {
     );
   };
   return (
-    <div className="Big-box h-100">
+    <div className="min-h-screen w-full overflow-x-hidden bg-[#f4f6f9] pt-2 font-sans">
       {homepage.announcement && (
-        <div className="homepage-announcement">{homepage.announcement}</div>
+        <div className="w-full bg-[#e10600] px-5 py-[11px] text-center text-[15px] font-bold tracking-[0.3px] text-white mb-2">
+          {homepage.announcement}
+        </div>
       )}
       <section className="container mb-4">
-        <div
-          id="carouselExampleAutoplaying"
-          className="carousel slide"
-          data-bs-ride="carousel"
-        >
+        <div id="carouselExampleAutoplaying" className="carousel slide" data-bs-ride="carousel" >
           <div className="carousel-inner">
             <div className="carousel-item active">
-              <img
-                src={homepage.firstImageUrl || F1_Cru}
-                alt="Leader"
-                style={{ height: "55vh" }}
-                className="d-block w-100  position-relative object-fit-contain"
-              />
+              <img src={homepage.firstImageUrl || CarouselPic} alt="Leader" style={{ height: "55vh" }} className="d-block w-100 position-relative object-fit-contain" />
             </div>
             <div className="carousel-item">
-              <img
-                src={homepage.secondImageUrl || Driver}
-                style={{ height: "55vh" }}
-                className="d-block w-100  object-fit-contain"
-                alt="Leader"
-              />{" "}
-            </div>
+              <img src={homepage.secondImageUrl || Driver} style={{ height: "55vh" }} className="d-block w-100 object-fit-contain" alt="Leader" />{" "} </div>
             <div className="carousel-item">
-              <img
-                src={homepage.thirdImageUrl || Calender}
-                style={{ height: "55vh" }}
-                className="d-block w-100  object-fit-contain"
-                alt="..."
-              />
+              <img src={homepage.thirdImageUrl || CalendarPic} style={{ height: "55vh" }} className="d-block w-100 object-fit-contain" alt="..." />
             </div>
           </div>
-          <button
-            className="carousel-control-prev"
-            type="button"
-            data-bs-target="#carouselExampleAutoplaying"
-            data-bs-slide="prev"
-          >
-            <span
-              className="carousel-control-prev-icon"
-              aria-hidden="true"
-            ></span>
+          <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev" >
+            <span className="carousel-control-prev-icon" aria-hidden="true" ></span>
             <span className="visually-hidden">Previous</span>
           </button>
-          <button
-            className="carousel-control-next"
-            type="button"
-            data-bs-target="#carouselExampleAutoplaying"
-            data-bs-slide="next"
-          >
-            <span
-              className="carousel-control-next-icon"
-              aria-hidden="true"
-            ></span>
+          <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next" >
+            <span className="carousel-control-next-icon" aria-hidden="true" ></span>
             <span className="visually-hidden">Next</span>
           </button>
         </div>
       </section>
-      <section className="Main-content content-center items-center">
-        <article className="w-100 place-items-center">
-          <h2>{homepage.welcomeTitle || "Welcome to F1"}</h2>
-          <p className="w-[90%] content-center text-1xl">
-            {homepage.welcomeText ||
-              `Formula 1 (F1) is the absolute pinnacle of international motorsport
-              and the most expensive sport in the world. It is a high-octane arena
-              where the world's most elite drivers push cutting-edge,
-              multi-million dollar machines to speeds exceeding 200 mph. Merging
-              high-stakes strategy, split-second engineering precision, and fierce
-              global rivalries, F1 is a thrilling spectacle of speed and luxury
-              that captivates millions of fans around the globe.`}
+      <section className="w-full content-center items-center">
+        <article className="home-welcome grid w-full place-items-center px-4 text-center">
+          <h2 className="mb-3">Welcome to Formula 1</h2>
+          <p className="w-[90%] max-w-[1100px] leading-relaxed">
+            Welcome to Formula 1, the top class of motorsport in the world. Here,
+            the fastest drivers race at more than 300 km/h while teams use the best
+            cars, technology, and strategy. Every Grand Prix is full of passion,
+            pressure, and close competition. F1 is not only about speed; it is
+            about teamwork, courage, and the dream of becoming champion.
           </p>
         </article>
 
@@ -304,14 +268,8 @@ const Home = () => {
           <div className="Current-Leader">
             <h3>Current WDC Leader</h3>
 
-            {leaderImage ? (
-              <img
-                src={leaderImage}
-                alt={
-                  `${championshipLeader.Driver.givenName} ` +
-                  championshipLeader.Driver.familyName
-                }
-              />
+            {leaderPic ? (
+              <img src={leaderPic} alt={ `${championshipLeader.Driver.givenName} ` + championshipLeader.Driver.familyName } />
             ) : (
               <div className="leader-image-placeholder">
                 {championshipLeader?.Driver?.givenName?.[0]}
@@ -344,35 +302,19 @@ const Home = () => {
           <section className="Race-icon">
             <h3 className="text-center text-2xl">Previous Race</h3>
             <div className="race-poster">
-              <img
-                className="race-poster-image"
-                src={previousRaceImage || Calender}
-                alt={previousRace?.raceName || "Previous race"}
-                onError={(event) => {
-                  event.currentTarget.onerror = null;
-                  event.currentTarget.src = Calender;
-                }}
-              />
+              <img className="race-poster-image" src={prevRacePic || CalendarPic} alt={prevRace?.raceName || "Previous race"} onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = CalendarPic; }} />
             </div>
           </section>
           <section className="Race-icon">
             <h3 className="text-center text-2xl">Next Race</h3>
             <div className="race-poster">
-              <img
-                className="race-poster-image"
-                src={nextRaceImage || Calender}
-                alt={nextRace?.raceName || "Next race"}
-                onError={(event) => {
-                  event.currentTarget.onerror = null;
-                  event.currentTarget.src = Calender;
-                }}
-              />
+              <img className="race-poster-image" src={nextRacePic || CalendarPic} alt={nextRace?.raceName || "Next race"} onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = CalendarPic; }} />
             </div>
           </section>
         </div>
         <section className="Latest-results">
           <h2 className="text-center">
-            {previousRace?.raceName || "Latest Race"} Results
+            {prevRace?.raceName || "Latest Race"} Results
           </h2>
 
           {raceResults.length >= 3 ? (
@@ -392,59 +334,19 @@ const Home = () => {
             </div>
             <section className="container-fluid w-100 h-[30vh]  flex overflow-x-auto gap-4 pb-4 scrollbar-thin flex-nowrap">
               <div className="box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]">
-                <iframe
-                  className="w-full aspect-video"
-                  src="https://www.youtube.com/embed/eWOsJa24sQo"
-                  title="Race Highlights | Formula 1 Canadian Grand Prix 2026"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowfullscreen
-                ></iframe>
+                <iframe className="w-full aspect-video" src="https://www.youtube.com/embed/eWOsJa24sQo" title="Race Highlights | Formula 1 Canadian Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowfullscreen ></iframe>
               </div>
               <div className="box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]">
-                <iframe
-                  className="w-full aspect-video"
-                  src="https://www.youtube.com/embed/ksm1knZbzgc"
-                  title="Race Highlights | Formula 1 Miami Grand Prix 2026"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowfullscreen
-                ></iframe>
+                <iframe className="w-full aspect-video" src="https://www.youtube.com/embed/ksm1knZbzgc" title="Race Highlights | Formula 1 Miami Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowfullscreen ></iframe>
               </div>
               <div className="box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]">
-                <iframe
-                  className="w-full aspect-video"
-                  src="https://www.youtube.com/embed/EW92sQPZuWk"
-                  title="Qualifying Highlights | Formula 1 Japanese Grand Prix 2026"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowfullscreen
-                ></iframe>
+                <iframe className="w-full aspect-video" src="https://www.youtube.com/embed/EW92sQPZuWk" title="Qualifying Highlights | Formula 1 Japanese Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowfullscreen ></iframe>
               </div>
               <div className="box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]">
-                <iframe
-                  className="w-full aspect-video"
-                  src="https://www.youtube.com/embed/Fjpn0s-KtKI"
-                  title="Race Highlights | Formula 1 Chinese Grand Prix 2026"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowfullscreen
-                ></iframe>
+                <iframe className="w-full aspect-video" src="https://www.youtube.com/embed/Fjpn0s-KtKI" title="Race Highlights | Formula 1 Chinese Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowfullscreen ></iframe>
               </div>
               <div className="box p-4 bg-gray-200 rounded-md shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-12px)]">
-                <iframe
-                  className="w-full aspect-video"
-                  src="https://www.youtube.com/embed/ovJKA-FMJUg"
-                  title="Race Highlights | Formula 1 Australian Grand Prix 2026"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowfullscreen
-                ></iframe>
+                <iframe className="w-full aspect-video" src="https://www.youtube.com/embed/ovJKA-FMJUg" title="Race Highlights | Formula 1 Australian Grand Prix 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowfullscreen ></iframe>
               </div>
             </section>
           </div>
@@ -452,6 +354,6 @@ const Home = () => {
       </section>
     </div>
   );
-};
+}
 
 export default Home;

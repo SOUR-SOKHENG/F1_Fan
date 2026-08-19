@@ -38,7 +38,7 @@ const getDriverInitials = (driverName = "") =>
     .slice(0, 2)
     .toUpperCase();
 
-const AdminTeams = () => {
+function AdminTeams() {
   const [selectedSeason, setSelectedSeason] = useState("current");
   const [teams, setTeams] = useState([]);
   const [currentStandings, setCurrentStandings] = useState({});
@@ -228,25 +228,25 @@ image: driverImages[normalizeName(driverName)] || "",
       : selectedSeason;
 
   return (
-    <main className="admin-teams-page">
-      <div className="admin-teams-heading">
+    <main className="min-h-[75vh] w-full">
+      <div className="mb-[22px] flex flex-col items-start justify-between gap-5 min-[751px]:flex-row min-[751px]:items-center">
         <div>
-          <p>F1 API TEAM DIRECTORY</p>
-          <h2>Team Championship History</h2>
+          <p className="mb-[5px] text-xs font-black tracking-[1.5px] text-[#e10600]">
+            F1 API TEAM DIRECTORY
+          </p>
+          <h2 className="m-0 text-[31px] text-[#191b20]">Team Championship History</h2>
         </div>
 
-        <div className="admin-team-api-status">
-          <span></span>
+        <div className="flex items-center gap-[9px] rounded-[20px] bg-[#202229] px-3.5 py-[9px] text-xs font-extrabold text-white">
+          <span className="h-[9px] w-[9px] rounded-full bg-[#37d86b] shadow-[0_0_0_4px_rgba(55,216,107,0.14)]"></span>
           Automatic API data
         </div>
       </div>
 
-      <section className="admin-team-filters">
-        <label>
+      <section className="grid grid-cols-1 items-end gap-[15px] rounded-[13px] border border-gray-200 bg-white p-5 shadow-md min-[751px]:grid-cols-[220px_minmax(240px,1fr)_auto]">
+        <label className="text-[13px] font-extrabold text-gray-700">
           Championship season
-          <select
-            value={selectedSeason}
-            onChange={(event) =>
+          <select className="mt-[7px] block w-full rounded-lg border border-gray-300 bg-gray-50 px-[13px] py-[11px] outline-none focus:border-[#e10600] focus:bg-white focus:ring-4 focus:ring-red-100" value={selectedSeason} onChange={(event) =>
               setSelectedSeason(event.target.value)
             }
           >
@@ -260,19 +260,12 @@ image: driverImages[normalizeName(driverName)] || "",
           </select>
         </label>
 
-        <label>
+        <label className="text-[13px] font-extrabold text-gray-700">
           Filter teams
-          <input
-            type="search"
-            value={teamSearch}
-            onChange={(event) => setTeamSearch(event.target.value)}
-            placeholder="Search team name"
-          />
+          <input className="mt-[7px] block w-full rounded-lg border border-gray-300 bg-gray-50 px-[13px] py-[11px] outline-none focus:border-[#e10600] focus:bg-white focus:ring-4 focus:ring-red-100" type="search" value={teamSearch} onChange={(event) => setTeamSearch(event.target.value)} placeholder="Search team name" />
         </label>
 
-        <button
-          type="button"
-          onClick={() =>
+        <button className="cursor-pointer rounded-lg border-0 bg-[#e10600] px-[17px] py-[11px] font-extrabold text-white hover:bg-[#b80500]" type="button" onClick={() =>
             setRefreshNumber((currentNumber) => currentNumber + 1)
           }
         >
@@ -280,40 +273,36 @@ image: driverImages[normalizeName(driverName)] || "",
         </button>
       </section>
 
-      <div className="admin-team-result-heading">
+      <div className="mb-[17px] mt-[30px] flex items-end justify-between gap-5">
         <div>
-          <p>CONSTRUCTOR STANDINGS</p>
-          <h3>{seasonLabel}</h3>
+          <p className="mb-[3px] text-[11px] font-black tracking-[1.2px] text-[#e10600]">
+            CONSTRUCTOR STANDINGS
+          </p>
+          <h3 className="m-0 text-[25px] text-[#202229]">{seasonLabel}</h3>
         </div>
 
-        <span>{visibleTeams.length} teams</span>
+        <span className="rounded-[15px] bg-[#202229] px-3 py-[7px] text-[11px] font-extrabold text-white">
+          {visibleTeams.length} teams
+        </span>
       </div>
 
       {loading && (
-        <p className="admin-team-message">
+        <p className="rounded-lg border-l-[5px] border-[#e10600] bg-white px-5 py-[30px] text-center text-gray-500">
           Loading {seasonLabel} teams...
         </p>
       )}
 
-      {error && <p className="admin-team-message">{error}</p>}
+      {error && <p className="rounded-lg border-l-[5px] border-[#e10600] bg-white px-5 py-[30px] text-center text-gray-500">{error}</p>}
 
       {!loading && !error && visibleTeams.length === 0 && (
-        <p className="admin-team-message">
+        <p className="rounded-lg border-l-[5px] border-[#e10600] bg-white px-5 py-[30px] text-center text-gray-500">
           No constructor standings were found for this season.
         </p>
       )}
 
       <section className="admin-team-history-grid">
         {visibleTeams.map((team) => (
-          <button
-            className="admin-team-history-card"
-            type="button"
-            key={team.id}
-            style={{
-              background: `linear-gradient(135deg, ${team.primaryColor}, ${team.secondaryColor})`,
-            }}
-            onClick={() => setSelectedTeam(team)}
-          >
+          <button className="admin-team-history-card" type="button" key={team.id} style={{ background: `linear-gradient(135deg, ${team.primaryColor}, ${team.secondaryColor})`, }} onClick={() => setSelectedTeam(team)} >
             <div className="admin-team-position">
               <span>P</span>
               {team.position}
@@ -343,28 +332,12 @@ image: driverImages[normalizeName(driverName)] || "",
                 <p>Driver data unavailable</p>
               ) : (
                 team.drivers.map((driver) => (
-  <div
-    className="admin-team-card-driver"
-    key={driver.id}
-  >
+  <div className="admin-team-card-driver" key={driver.id} >
     {driver.image ? (
-      <img
-        src={driver.image}
-        alt={driver.name}
-        onError={(event) => {
-          event.currentTarget.style.display = "none";
-          event.currentTarget.nextElementSibling.style.display =
-            "grid";
-        }}
-      />
+      <img src={driver.image} alt={driver.name} onError={(event) => { event.currentTarget.style.display = "none"; event.currentTarget.nextElementSibling.style.display = "grid"; }} />
     ) : null}
 
-    <span
-      className="admin-driver-initials"
-      style={{
-        display: driver.image ? "none" : "grid",
-      }}
-    >
+    <span className="admin-driver-initials" style={{ display: driver.image ? "none" : "grid", }} >
       {getDriverInitials(driver.name)}
     </span>
 
@@ -383,29 +356,13 @@ image: driverImages[normalizeName(driverName)] || "",
       </section>
 
       {selectedTeam && (
-        <div
-          className="admin-team-modal"
-          onClick={() => setSelectedTeam(null)}
-        >
-          <article
-            className="admin-team-modal-content"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <button
-              className="admin-team-modal-close"
-              type="button"
-              onClick={() => setSelectedTeam(null)}
-              aria-label="Close team details"
-            >
+        <div className="admin-team-modal" onClick={() => setSelectedTeam(null)} >
+          <article className="admin-team-modal-content" onClick={(event) => event.stopPropagation()} >
+            <button className="admin-team-modal-close" type="button" onClick={() => setSelectedTeam(null)} aria-label="Close team details" >
               ×
             </button>
 
-            <div
-              className="admin-team-modal-banner"
-              style={{
-                background: `linear-gradient(135deg, ${selectedTeam.primaryColor}, ${selectedTeam.secondaryColor})`,
-              }}
-            >
+            <div className="admin-team-modal-banner" style={{ background: `linear-gradient(135deg, ${selectedTeam.primaryColor}, ${selectedTeam.secondaryColor})`, }} >
               <p>{selectedTeam.nationality}</p>
               <h2>{selectedTeam.name}</h2>
               <span>{seasonLabel} Constructor</span>
@@ -448,23 +405,10 @@ image: driverImages[normalizeName(driverName)] || "",
                     <div key={driver.id}>
                       <div className="admin-history-driver-picture">
   {driver.image ? (
-    <img
-      src={driver.image}
-      alt={driver.name}
-      onError={(event) => {
-        event.currentTarget.style.display = "none";
-        event.currentTarget.nextElementSibling.style.display =
-          "grid";
-      }}
-    />
+    <img src={driver.image} alt={driver.name} onError={(event) => { event.currentTarget.style.display = "none"; event.currentTarget.nextElementSibling.style.display = "grid"; }} />
   ) : null}
 
-  <span
-    className="admin-driver-initials"
-    style={{
-      display: driver.image ? "none" : "grid",
-    }}
-  >
+  <span className="admin-driver-initials" style={{ display: driver.image ? "none" : "grid", }} >
     {getDriverInitials(driver.name)}
   </span>
 </div>
@@ -486,11 +430,7 @@ image: driverImages[normalizeName(driverName)] || "",
               </div>
 
               {selectedTeam.informationUrl && (
-                <a
-                  href={selectedTeam.informationUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a href={selectedTeam.informationUrl} target="_blank" rel="noreferrer" >
                   Read team history
                 </a>
               )}
@@ -500,6 +440,6 @@ image: driverImages[normalizeName(driverName)] || "",
       )}
     </main>
   );
-};
+}
 
 export default AdminTeams;

@@ -39,7 +39,7 @@ const getDriverInitials = (driverName = "") =>
     .slice(0, 2)
     .toUpperCase();
 
-const Team = () => {
+function Team() {
   const [selectedSeason, setSelectedSeason] = useState("current");
   const [teams, setTeams] = useState([]);
   const [currentStandings, setCurrentStandings] = useState({});
@@ -49,7 +49,7 @@ const Team = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const loadDriverImages = async (season) => {
+    const loadDriverPics = async (season) => {
       if (season < 2023) return {};
 
       try {
@@ -76,18 +76,18 @@ const Team = () => {
         if (!driversResponse.ok) return {};
 
         const drivers = await driversResponse.json();
-        const imageMap = {};
+        const picMap = {};
 
         drivers.forEach((driver) => {
           if (!driver.full_name || !driver.headshot_url) return;
 
-          imageMap[normalizeName(driver.full_name)] =
+          picMap[normalizeName(driver.full_name)] =
             driver.headshot_url;
         });
 
-        return imageMap;
-      } catch (imageError) {
-        console.warn("Driver pictures are unavailable:", imageError);
+        return picMap;
+      } catch (picError) {
+        console.warn("Driver pictures are unavailable:", picError);
         return {};
       }
     };
@@ -112,7 +112,7 @@ const Team = () => {
           standingsResponse,
           driversResponse,
           currentResponse,
-          driverImages,
+          driverPics,
         ] = await Promise.all([
           fetch(
             `https://api.jolpi.ca/ergast/f1/${seasonPath}/constructorstandings/`
@@ -123,7 +123,7 @@ const Team = () => {
           fetch(
             "https://api.jolpi.ca/ergast/f1/current/constructorstandings/"
           ),
-          loadDriverImages(imageSeason),
+          loadDriverPics(imageSeason),
         ]);
 
         if (
@@ -179,8 +179,7 @@ const Team = () => {
               position: entry.position,
               points: entry.points,
               wins: entry.wins,
-              image:
-                driverImages[normalizeName(driverName)] || "",
+              pic: driverPics[normalizeName(driverName)] || "",
             });
           });
         });
@@ -233,11 +232,15 @@ const Team = () => {
       : selectedSeason;
 
   return (
-    <main className="teams-page">
-      <header className="teams-heading">
-        <p>Formula 1 Constructors</p>
-        <h1>F1 Teams</h1>
-        <span>
+    <main className="mx-auto my-0 min-h-[80vh] max-w-[1350px] px-3.5 py-9 font-sans sm:px-6 sm:py-[55px] mb-5">
+      <header className="mb-[35px]">
+        <p className="m-0 font-extrabold uppercase text-[#e10600]">
+          Formula 1 Constructors
+        </p>
+        <h1 className="mb-2 mt-1 text-[39px] italic uppercase sm:text-[52px]">
+          F1 Teams
+        </h1>
+        <span className="text-lg text-gray-600">
           Explore current teams and Formula 1 constructor history.
         </span>
       </header>
@@ -246,9 +249,7 @@ const Team = () => {
         <label>
           Championship season
 
-          <select
-            value={selectedSeason}
-            onChange={(event) =>
+          <select value={selectedSeason} onChange={(event) =>
               setSelectedSeason(event.target.value)
             }
           >
@@ -265,12 +266,7 @@ const Team = () => {
         <label>
           Find a team
 
-          <input
-            type="search"
-            value={teamSearch}
-            onChange={(event) => setTeamSearch(event.target.value)}
-            placeholder="Search team name"
-          />
+          <input type="search" value={teamSearch} onChange={(event) => setTeamSearch(event.target.value)} placeholder="Search team name" />
         </label>
       </section>
 
@@ -284,30 +280,26 @@ const Team = () => {
       </div>
 
       {loading && (
-        <p className="team-page-message">
+        <p className="rounded-xl bg-gray-100 p-[30px] text-center text-gray-600">
           Loading {seasonLabel} teams...
         </p>
       )}
 
-      {error && <p className="team-page-message">{error}</p>}
+      {error && (
+        <p className="rounded-xl bg-gray-100 p-[30px] text-center text-gray-600">
+          {error}
+        </p>
+      )}
 
       {!loading && !error && visibleTeams.length === 0 && (
-        <p className="team-page-message">
+        <p className="rounded-xl bg-gray-100 p-[30px] text-center text-gray-600">
           No constructor standings were found.
         </p>
       )}
 
       <section className="public-team-grid">
         {visibleTeams.map((team) => (
-          <button
-            className="public-team-card"
-            type="button"
-            key={team.id}
-            style={{
-              background: `linear-gradient(135deg, ${team.primaryColor}, ${team.secondaryColor})`,
-            }}
-            onClick={() => setSelectedTeam(team)}
-          >
+          <button className="public-team-card" type="button" key={team.id} style={{ background: `linear-gradient(135deg, ${team.primaryColor}, ${team.secondaryColor})`, }} onClick={() => setSelectedTeam(team)} >
             <div className="public-team-position">
               <span>P</span>
               {team.position}
@@ -338,24 +330,11 @@ const Team = () => {
               ) : (
                 team.drivers.map((driver) => (
                   <div key={driver.id}>
-                    {driver.image ? (
-                      <img
-                        src={driver.image}
-                        alt={driver.name}
-                        onError={(event) => {
-                          event.currentTarget.style.display = "none";
-                          event.currentTarget.nextElementSibling.style.display =
-                            "grid";
-                        }}
-                      />
+                    {driver.pic ? (
+                      <img src={driver.pic} alt={driver.name} onError={(event) => { event.currentTarget.style.display = "none"; event.currentTarget.nextElementSibling.style.display = "grid"; }} />
                     ) : null}
 
-                    <span
-                      className="driver-initial"
-                      style={{
-                        display: driver.image ? "none" : "grid",
-                      }}
-                    >
+                    <span className="driver-initial" style={{ display: driver.pic ? "none" : "grid", }} >
                       {getDriverInitials(driver.name)}
                     </span>
 
@@ -376,33 +355,13 @@ const Team = () => {
       </section>
 
       {selectedTeam && (
-        <div
-          className="team-details-overlay"
-          role="presentation"
-          onClick={() => setSelectedTeam(null)}
-        >
-          <article
-            className="team-details"
-            role="dialog"
-            aria-modal="true"
-            aria-label={`${selectedTeam.name} details`}
-            onClick={(event) => event.stopPropagation()}
-          >
-            <button
-              className="close-team-details"
-              type="button"
-              onClick={() => setSelectedTeam(null)}
-              aria-label="Close team details"
-            >
+        <div className="team-details-overlay" role="presentation" onClick={() => setSelectedTeam(null)} >
+          <article className="team-details" role="dialog" aria-modal="true" aria-label={`${selectedTeam.name} details`} onClick={(event) => event.stopPropagation()} >
+            <button className="close-team-details" type="button" onClick={() => setSelectedTeam(null)} aria-label="Close team details" >
               ×
             </button>
 
-            <div
-              className="team-details-banner"
-              style={{
-                background: `linear-gradient(135deg, ${selectedTeam.primaryColor}, ${selectedTeam.secondaryColor})`,
-              }}
-            >
+            <div className="team-details-banner" style={{ background: `linear-gradient(135deg, ${selectedTeam.primaryColor}, ${selectedTeam.secondaryColor})`, }} >
               <p>{selectedTeam.nationality}</p>
               <h2>{selectedTeam.name}</h2>
               <span>{seasonLabel} Constructor</span>
@@ -444,28 +403,11 @@ const Team = () => {
                   selectedTeam.drivers.map((driver) => (
                     <div key={driver.id}>
                       <div className="team-driver-picture">
-                        {driver.image ? (
-                          <img
-                            src={driver.image}
-                            alt={driver.name}
-                            onError={(event) => {
-                              event.currentTarget.style.display =
-                                "none";
-
-                              event.currentTarget.nextElementSibling.style.display =
-                                "grid";
-                            }}
-                          />
+                        {driver.pic ? (
+                          <img src={driver.pic} alt={driver.name} onError={(event) => { event.currentTarget.style.display = "none"; event.currentTarget.nextElementSibling.style.display = "grid"; }} />
                         ) : null}
 
-                        <span
-                          className="driver-initial"
-                          style={{
-                            display: driver.image
-                              ? "none"
-                              : "grid",
-                          }}
-                        >
+                        <span className="driver-initial" style={{ display: driver.pic ? "none" : "grid", }} >
                           {getDriverInitials(driver.name)}
                         </span>
                       </div>
@@ -491,12 +433,7 @@ const Team = () => {
               </div>
 
               {selectedTeam.informationUrl && (
-                <a
-                  className="team-history-link"
-                  href={selectedTeam.informationUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a className="team-history-link" href={selectedTeam.informationUrl} target="_blank" rel="noreferrer" >
                   Read team history
                 </a>
               )}
@@ -506,6 +443,6 @@ const Team = () => {
       )}
     </main>
   );
-};
+}
 
 export default Team;

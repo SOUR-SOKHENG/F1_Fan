@@ -3,13 +3,13 @@ import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 import "../Css/Clip.css";
 
-const Clip = () => {
+function Clip() {
   const [clips, setClips] = useState([]);
   const [selectedClip, setSelectedClip] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [searchText, setSearchText] = useState("");
+  const [search, setSearch] = useState("");
   const [sortOrder, setSortOrder] = useState("newest");
-  const [selectedDate, setSelectedDate] = useState("");
+  const [date, setDate] = useState("");
   useEffect(() => {
     const clipsQuery = query(
       collection(db, "clips"),
@@ -51,7 +51,7 @@ const Clip = () => {
     setSelectedClip(null);
   };
 
-  const displayPlatform = (platform) => {
+  const getPlatform = (platform) => {
     if (platform === "youtube") return "YouTube";
     if (platform === "vimeo") return "Vimeo";
     if (platform === "direct") return "Video";
@@ -70,19 +70,13 @@ const Clip = () => {
     }
 
     return (
-      <iframe
-        className="clip-player"
-        src={clip.embedUrl}
-        title={clip.title}
-        allow="autoplay; fullscreen; picture-in-picture"
-        allowFullScreen
-      />
+      <iframe className="clip-player" src={clip.embedUrl} title={clip.title} allow="autoplay; fullscreen; picture-in-picture" allowFullScreen />
     );
   };
   const getClipTime = (clip) =>
     clip.createdAt?.toMillis?.() || clip.createdAt?.seconds * 1000 || 0;
 
-  const getClipDateValue = (clip) => {
+  const getClipDate = (clip) => {
     const time = getClipTime(clip);
 
     if (!time) return "";
@@ -96,14 +90,14 @@ const Clip = () => {
   };
 
   const visibleClips = useMemo(() => {
-    const keywords = searchText
+    const keywords = search
       .trim()
       .toLowerCase()
       .split(/\s+/)
       .filter(Boolean);
 
     const filteredClips = clips.filter((clip) => {
-      const searchableInformation = [
+      const clipText = [
         clip.title,
         clip.description,
         clip.platform,
@@ -114,10 +108,10 @@ const Clip = () => {
 
       const matchesSearch =
         keywords.length === 0 ||
-        keywords.every((keyword) => searchableInformation.includes(keyword));
+        keywords.every((keyword) => clipText.includes(keyword));
 
       const matchesDate =
-        !selectedDate || getClipDateValue(clip) === selectedDate;
+        !date || getClipDate(clip) === date;
 
       return matchesSearch && matchesDate;
     });
@@ -130,19 +124,23 @@ const Clip = () => {
         ? firstTime - secondTime
         : secondTime - firstTime;
     });
-  }, [clips, searchText, sortOrder, selectedDate]);
+  }, [clips, search, sortOrder, date]);
 
   const clearFilters = () => {
-    setSearchText("");
+    setSearch("");
     setSortOrder("newest");
-    setSelectedDate("");
+    setDate("");
   };
   return (
-    <main className="clips-page">
-      <section className="clips-heading">
-        <p className="clips-label">F1 VIDEOS</p>
-        <h1>Latest Clips</h1>
-        <p>
+    <main className="min-h-screen w-full bg-[#f4f5f7] px-5 py-10 text-[#20232a] sm:px-[6%] sm:py-[60px]">
+      <section className="mb-[38px] max-w-[760px]">
+        <p className="mb-2 text-sm font-extrabold tracking-[2px] text-[#e10600]">
+          F1 VIDEOS
+        </p>
+        <h1 className="m-0 text-[clamp(36px,5vw,62px)] italic uppercase">
+          Latest Clips
+        </h1>
+        <p className="mt-3.5 text-[17px] leading-relaxed text-gray-600">
           Watch race highlights, interviews, team updates and other Formula 1
           videos.
         </p>
@@ -150,20 +148,12 @@ const Clip = () => {
       <section className="clips-filters">
         <label className="clips-search">
           Search clips
-          <input
-            type="search"
-            value={searchText}
-            onChange={(event) => setSearchText(event.target.value)}
-            placeholder="Search clips by keyword"
-          />
+          <input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search clips by keyword" />
         </label>
 
         <label>
           Sort clips
-          <select
-            value={sortOrder}
-            onChange={(event) => setSortOrder(event.target.value)}
-          >
+          <select value={sortOrder} onChange={(event) => setSortOrder(event.target.value)} >
             <option value="newest">Newest first</option>
             <option value="oldest">Oldest first</option>
           </select>
@@ -171,27 +161,31 @@ const Clip = () => {
 
         <label>
           Date added
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={(event) => setSelectedDate(event.target.value)}
-          />
+          <input type="date" value={date} onChange={(event) => setDate(event.target.value)} />
         </label>
 
         <button type="button" onClick={clearFilters}>
           Clear
         </button>
       </section>
-      {loading && <p className="clips-message">Loading clips...</p>}
+      {loading && (
+        <p className="py-10 text-center text-gray-500">Loading clips...</p>
+      )}
 
       {!loading && clips.length === 0 && (
-        <p className="clips-message">No clips have been published yet.</p>
+        <p className="py-10 text-center text-gray-500">
+          No clips have been published yet.
+        </p>
       )}
       {!loading && clips.length > 0 && visibleClips.length === 0 && (
-        <div className="clips-message">
+        <div className="py-10 text-center text-gray-500">
           <p>No clips match your search.</p>
 
-          <button type="button" onClick={clearFilters}>
+          <button
+            className="mt-2.5 rounded-lg border-0 bg-[#e10600] px-4 py-2 font-extrabold text-white"
+            type="button"
+            onClick={clearFilters}
+          >
             Clear filters
           </button>
         </div>
@@ -199,47 +193,22 @@ const Clip = () => {
       <section className="clips-grid">
         {visibleClips.map((clip) => (
           <article className="clip-card" key={clip.id}>
-            <button
-              className="clip-thumbnail-button"
-              type="button"
-              onClick={() => openClip(clip)}
-            >
-              <img
-                className="clip-thumbnail"
-                src={clip.thumbnailUrl}
-                alt={clip.title}
-                onError={(event) => {
-                  const videoId = clip.embedUrl
-                    ?.split("/embed/")[1]
-                    ?.split("?")[0];
-
-                  event.currentTarget.onerror = null;
-
-                  if (videoId) {
-                    event.currentTarget.src = `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`;
-                  } else {
-                    event.currentTarget.style.display = "none";
-                  }
-                }}
-              />
+            <button className="clip-thumbnail-btn" type="button" onClick={() => openClip(clip)} >
+              <img className="clip-thumbnail" src={clip.thumbnailUrl} alt={clip.title} onError={(event) => { const videoId = clip.embedUrl ?.split("/embed/")[1] ?.split("?")[0]; event.currentTarget.onerror = null; if (videoId) { event.currentTarget.src = `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`; } else { event.currentTarget.style.display = "none"; } }} />
 
               <span className="clip-play-icon">▶</span>
             </button>
 
             <div className="clip-card-content">
               <span className="clip-platform">
-                {displayPlatform(clip.platform)}
+                {getPlatform(clip.platform)}
               </span>
 
               <h2>{clip.title}</h2>
 
               {clip.description && <p>{clip.description}</p>}
 
-              <button
-                className="watch-clip-button"
-                type="button"
-                onClick={() => openClip(clip)}
-              >
+              <button className="watch-clip-btn" type="button" onClick={() => openClip(clip)} >
                 Watch clip
               </button>
             </div>
@@ -249,16 +218,8 @@ const Clip = () => {
 
       {selectedClip && (
         <div className="clip-modal" onClick={closeClip}>
-          <div
-            className="clip-modal-content"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <button
-              className="clip-close-button"
-              type="button"
-              onClick={closeClip}
-              aria-label="Close video"
-            >
+          <div className="clip-modal-content" onClick={(event) => event.stopPropagation()} >
+            <button className="clip-close-btn" type="button" onClick={closeClip} aria-label="Close video" >
               ×
             </button>
 
@@ -268,7 +229,7 @@ const Clip = () => {
 
             <div className="clip-modal-information">
               <span className="clip-platform">
-                {displayPlatform(selectedClip.platform)}
+                {getPlatform(selectedClip.platform)}
               </span>
 
               <h2>{selectedClip.title}</h2>
@@ -276,11 +237,7 @@ const Clip = () => {
               {selectedClip.description && <p>{selectedClip.description}</p>}
 
               {selectedClip.originalUrl && (
-                <a
-                  href={selectedClip.originalUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a href={selectedClip.originalUrl} target="_blank" rel="noreferrer" >
                   View original video
                 </a>
               )}
@@ -290,6 +247,6 @@ const Clip = () => {
       )}
     </main>
   );
-};
+}
 
 export default Clip;

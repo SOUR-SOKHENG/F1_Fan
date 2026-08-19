@@ -1,13 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, onSnapshot, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 import "./AdminClips.css";
 
@@ -77,7 +69,7 @@ const createVideoInformation = (form) => {
   };
 };
 
-const AdminClips = () => {
+function AdminClips() {
   const [clips, setClips] = useState([]);
   const [form, setForm] = useState(emptyClip);
   const [editingId, setEditingId] = useState("");
@@ -311,55 +303,47 @@ const AdminClips = () => {
     setSelectedDate("");
   };
   return (
-    <main className="admin-clips-page">
-      <div className="admin-clips-heading">
+    <main className="min-h-[75vh] w-full">
+      <div className="mb-6 flex flex-col items-start justify-between gap-5 min-[761px]:flex-row min-[761px]:items-center">
         <div>
-          <p>CLIP MANAGEMENT</p>
-          <h2>Published Clips</h2>
+          <p className="mb-[5px] text-xs font-black tracking-[1.5px] text-[#e10600]">
+            CLIP MANAGEMENT
+          </p>
+          <h2 className="m-0 text-[30px] text-[#191b20]">Published Clips</h2>
         </div>
 
-        <div className="admin-clips-heading-actions">
-          <span>{clips.length} clips</span>
+        <div className="flex w-full flex-col items-stretch gap-[11px] min-[521px]:w-auto min-[521px]:flex-row min-[521px]:items-center">
+          <span className="rounded-[18px] bg-[#202229] px-[13px] py-2 text-center text-xs font-extrabold text-white">
+            {clips.length} clips
+          </span>
 
-          <button type="button" onClick={openCreateForm}>
+          <button className="cursor-pointer rounded-lg border-0 bg-[#e10600] px-4 py-2.5 font-extrabold text-white hover:bg-[#b80500]" type="button" onClick={openCreateForm}>
             + Add New Clip
           </button>
         </div>
       </div>
 
-      {message && !showForm && <p className="admin-clips-message">{message}</p>}
-      <section className="admin-clips-filters">
-        <label className="admin-clips-search">
+      {message && !showForm && <p className="mb-5 rounded-md border-l-4 border-[#e10600] bg-white px-[15px] py-3 text-gray-700">{message}</p>}
+      <section className="mb-[27px] grid grid-cols-1 items-end gap-[13px] rounded-xl border border-gray-200 bg-white p-[18px] shadow-md min-[761px]:grid-cols-2 min-[1051px]:grid-cols-[minmax(240px,1fr)_180px_180px_auto]">
+        <label className="text-xs font-extrabold text-gray-700">
           Search clips
-          <input
-            type="search"
-            value={searchText}
-            onChange={(event) => setSearchText(event.target.value)}
-            placeholder="Search title, description or platform"
-          />
+          <input className="mt-[7px] block w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2.5 outline-none focus:border-[#e10600] focus:bg-white focus:ring-4 focus:ring-red-100" type="search" value={searchText} onChange={(event) => setSearchText(event.target.value)} placeholder="Search title, description or platform" />
         </label>
 
-        <label>
+        <label className="text-xs font-extrabold text-gray-700">
           Sort clips
-          <select
-            value={sortOrder}
-            onChange={(event) => setSortOrder(event.target.value)}
-          >
+          <select className="mt-[7px] block w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2.5 outline-none focus:border-[#e10600] focus:bg-white focus:ring-4 focus:ring-red-100" value={sortOrder} onChange={(event) => setSortOrder(event.target.value)} >
             <option value="newest">Newest first</option>
             <option value="oldest">Oldest first</option>
           </select>
         </label>
 
-        <label>
+        <label className="text-xs font-extrabold text-gray-700">
           Date added
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={(event) => setSelectedDate(event.target.value)}
-          />
+          <input className="mt-[7px] block w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2.5 outline-none focus:border-[#e10600] focus:bg-white focus:ring-4 focus:ring-red-100" type="date" value={selectedDate} onChange={(event) => setSelectedDate(event.target.value)} />
         </label>
 
-        <button type="button" onClick={clearFilters}>
+        <button className="cursor-pointer rounded-lg border-0 bg-gray-200 px-[15px] py-2.5 font-extrabold text-gray-700 hover:bg-[#25272d] hover:text-white" type="button" onClick={clearFilters}>
           Clear filters
         </button>
       </section>
@@ -387,36 +371,9 @@ const AdminClips = () => {
           ) : (
             <section className="admin-clip-grid">
               {visibleClips.map((clip) => (
-                <article
-                  className="admin-clip-card"
-                  key={clip.id}
-                  role="button"
-                  tabIndex="0"
-                  onClick={() => openClipDetails(clip)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter" || event.key === " ") {
-                      openClipDetails(clip);
-                    }
-                  }}
-                >
+                <article className="admin-clip-card" key={clip.id} role="button" tabIndex="0" onClick={() => openClipDetails(clip)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { openClipDetails(clip); } }} >
                   <div className="admin-clip-thumbnail">
-                    <img
-                      src={clip.thumbnailUrl}
-                      alt={clip.title}
-                      onError={(event) => {
-                        const videoId = clip.embedUrl
-                          ?.split("/embed/")[1]
-                          ?.split("?")[0];
-
-                        event.currentTarget.onerror = null;
-
-                        if (videoId) {
-                          event.currentTarget.src = `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`;
-                        } else {
-                          event.currentTarget.style.display = "none";
-                        }
-                      }}
-                    />
+                    <img src={clip.thumbnailUrl} alt={clip.title} onError={(event) => { const videoId = clip.embedUrl ?.split("/embed/")[1] ?.split("?")[0]; event.currentTarget.onerror = null; if (videoId) { event.currentTarget.src = `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`; } else { event.currentTarget.style.display = "none"; } }} />
 
                     <span className="admin-clip-play-icon">▶</span>
 
@@ -437,25 +394,11 @@ const AdminClips = () => {
                     <p>{clip.description || "No description provided."}</p>
 
                     <div className="admin-clip-card-actions">
-                      <button
-                        className="edit-clip-button"
-                        type="button"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          openUpdateForm(clip);
-                        }}
-                      >
+                      <button className="edit-clip-btn" type="button" onClick={(event) => { event.stopPropagation(); openUpdateForm(clip); }} >
                         Update
                       </button>
 
-                      <button
-                        className="delete-clip-button"
-                        type="button"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          deleteClip(clip);
-                        }}
-                      >
+                      <button className="delete-clip-btn" type="button" onClick={(event) => { event.stopPropagation(); deleteClip(clip); }} >
                         Delete
                       </button>
                     </div>
@@ -469,16 +412,8 @@ const AdminClips = () => {
 
       {selectedClip && (
         <div className="admin-clips-modal" onClick={closeClipDetails}>
-          <article
-            className="admin-clip-detail-modal"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <button
-              className="admin-clips-modal-close"
-              type="button"
-              onClick={closeClipDetails}
-              aria-label="Close clip details"
-            >
+          <article className="admin-clip-detail-modal" onClick={(event) => event.stopPropagation()} >
+            <button className="admin-clips-modal-close" type="button" onClick={closeClipDetails} aria-label="Close clip details" >
               ×
             </button>
 
@@ -488,12 +423,7 @@ const AdminClips = () => {
                   Your browser does not support video playback.
                 </video>
               ) : (
-                <iframe
-                  src={selectedClip.embedUrl}
-                  title={selectedClip.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
+                <iframe src={selectedClip.embedUrl} title={selectedClip.title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
               )}
             </div>
 
@@ -519,31 +449,15 @@ const AdminClips = () => {
               </div>
 
               <div className="admin-clip-detail-actions">
-                <a
-                  href={selectedClip.originalUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a href={selectedClip.originalUrl} target="_blank" rel="noreferrer" >
                   Open original video
                 </a>
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    closeClipDetails();
-                    openUpdateForm(selectedClip);
-                  }}
-                >
+                <button type="button" onClick={() => { closeClipDetails(); openUpdateForm(selectedClip); }} >
                   Update Clip
                 </button>
 
-                <button
-                  className="delete-clip-button"
-                  type="button"
-                  onClick={() => {
-                    deleteClip(selectedClip);
-                  }}
-                >
+                <button className="delete-clip-btn" type="button" onClick={() => { deleteClip(selectedClip); }} >
                   Delete
                 </button>
               </div>
@@ -554,16 +468,8 @@ const AdminClips = () => {
 
       {showForm && (
         <div className="admin-clips-modal" onClick={closeForm}>
-          <section
-            className="admin-clips-modal-content"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <button
-              className="admin-clips-modal-close"
-              type="button"
-              onClick={closeForm}
-              aria-label="Close clip form"
-            >
+          <section className="admin-clips-modal-content" onClick={(event) => event.stopPropagation()} >
+            <button className="admin-clips-modal-close" type="button" onClick={closeForm} aria-label="Close clip form" >
               ×
             </button>
 
@@ -576,23 +482,12 @@ const AdminClips = () => {
             <form onSubmit={saveClip}>
               <label>
                 Clip title
-                <input
-                  name="title"
-                  type="text"
-                  value={form.title}
-                  onChange={handleChange}
-                  placeholder="Best moments from the race"
-                  required
-                />
+                <input name="title" type="text" value={form.title} onChange={handleChange} placeholder="Best moments from the race" required />
               </label>
 
               <label>
                 Video source
-                <select
-                  name="platform"
-                  value={form.platform}
-                  onChange={handleChange}
-                >
+                <select name="platform" value={form.platform} onChange={handleChange} >
                   <option value="youtube">YouTube</option>
                   <option value="vimeo">Vimeo</option>
                   <option value="direct">Direct MP4 link</option>
@@ -601,65 +496,32 @@ const AdminClips = () => {
 
               <label>
                 Video link
-                <input
-                  name="originalUrl"
-                  type="url"
-                  value={form.originalUrl}
-                  onChange={handleChange}
-                  placeholder="https://youtube.com/watch?v=..."
-                  required
-                />
+                <input name="originalUrl" type="url" value={form.originalUrl} onChange={handleChange} placeholder="https://youtube.com/watch?v=..." required />
               </label>
 
               <label>
                 Thumbnail image URL
-                <input
-                  name="thumbnailUrl"
-                  type="url"
-                  value={form.thumbnailUrl}
-                  onChange={handleChange}
-                  placeholder="Optional for YouTube"
-                />
+                <input name="thumbnailUrl" type="url" value={form.thumbnailUrl} onChange={handleChange} placeholder="Optional for YouTube" />
               </label>
 
               {form.thumbnailUrl && (
-                <img
-                  className="admin-clip-thumbnail-preview"
-                  src={form.thumbnailUrl}
-                  alt="Clip thumbnail preview"
-                />
+                <img className="admin-clip-thumbnail-preview" src={form.thumbnailUrl} alt="Clip thumbnail preview" />
               )}
 
               <label>
                 Description
-                <textarea
-                  name="description"
-                  rows="4"
-                  value={form.description}
-                  onChange={handleChange}
-                  placeholder="Write a short description"
-                />
+                <textarea name="description" rows="4" value={form.description} onChange={handleChange} placeholder="Write a short description" />
               </label>
 
               <label className="clip-published-checkbox">
-                <input
-                  name="published"
-                  type="checkbox"
-                  checked={form.published}
-                  onChange={handleChange}
-                />
+                <input name="published" type="checkbox" checked={form.published} onChange={handleChange} />
                 Visible on the public Clips page
               </label>
 
               {message && <p className="admin-clips-form-message">{message}</p>}
 
               <div className="admin-clips-form-actions">
-                <button
-                  className="admin-clips-cancel-button"
-                  type="button"
-                  onClick={closeForm}
-                  disabled={saving}
-                >
+                <button className="admin-clips-cancel-btn" type="button" onClick={closeForm} disabled={saving} >
                   Cancel
                 </button>
 
@@ -677,6 +539,6 @@ const AdminClips = () => {
       )}
     </main>
   );
-};
+}
 
 export default AdminClips;
